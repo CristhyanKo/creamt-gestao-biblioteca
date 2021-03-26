@@ -13,7 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{550ADC8F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entities", "Entities", "{8D82CB32-1035-4A9F-BDD2-D2A370B327CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoMais.Entities", "GestaoMais.Entities\GestaoMais.Entities.csproj", "{5371CBBC-FCD9-43AD-84EB-3D38D706E44C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestaoMais.Entities", "GestaoMais.Entities\GestaoMais.Entities.csproj", "{5371CBBC-FCD9-43AD-84EB-3D38D706E44C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoMais.Domain", "GestaoMais.Domain\GestaoMais.Domain.csproj", "{6D15F642-29C9-43DC-A62A-7F70EF709662}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,12 +27,17 @@ Global
 		{5371CBBC-FCD9-43AD-84EB-3D38D706E44C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5371CBBC-FCD9-43AD-84EB-3D38D706E44C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5371CBBC-FCD9-43AD-84EB-3D38D706E44C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D15F642-29C9-43DC-A62A-7F70EF709662}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D15F642-29C9-43DC-A62A-7F70EF709662}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D15F642-29C9-43DC-A62A-7F70EF709662}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D15F642-29C9-43DC-A62A-7F70EF709662}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5371CBBC-FCD9-43AD-84EB-3D38D706E44C} = {8D82CB32-1035-4A9F-BDD2-D2A370B327CD}
+		{6D15F642-29C9-43DC-A62A-7F70EF709662} = {975F0283-4164-43D2-9439-F37FA45E631A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {974FBCE3-006E-4220-946C-8A3D8A0BCF98}
