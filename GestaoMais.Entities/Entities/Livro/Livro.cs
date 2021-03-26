@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GestaoMais.Entities.Entities.Livro
+﻿namespace GestaoMais.Entities.Entities.Livro
 {
     public class Livro : Base
     {
