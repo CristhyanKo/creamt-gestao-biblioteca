@@ -13,8 +13,4 @@
     <ProjectReference Include="..\GestaoMais.Domain\GestaoMais.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repository\Repositories\" />
-  </ItemGroup>
-
 </Project>
