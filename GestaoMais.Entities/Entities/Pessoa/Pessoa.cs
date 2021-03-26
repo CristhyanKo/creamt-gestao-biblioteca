@@ -14,6 +14,8 @@ namespace GestaoMais.Entities.Entities.Pessoa
         public int NacionalidadeId { get; set; }
         public Sexo Sexo { get; set; }
         public int SexoId { get; set; }
+        public TipoPessoa TipoPessoa { get; set; }
+        public int TipoPessoaId { get; set; }
         public bool Ativo { get; set; }
     }
 }
