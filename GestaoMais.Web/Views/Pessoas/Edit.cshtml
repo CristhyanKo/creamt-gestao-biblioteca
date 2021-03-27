@@ -1,0 +1,79 @@
+﻿@model GestaoMais.Entities.Entities.Pessoa.Pessoa
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Pessoa</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NomeFantasia" class="control-label"></label>
+                <input asp-for="NomeFantasia" class="form-control" />
+                <span asp-validation-for="NomeFantasia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RazaoSocial" class="control-label"></label>
+                <input asp-for="RazaoSocial" class="form-control" />
+                <span asp-validation-for="RazaoSocial" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CpfCnpj" class="control-label"></label>
+                <input asp-for="CpfCnpj" class="form-control" />
+                <span asp-validation-for="CpfCnpj" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rg" class="control-label"></label>
+                <input asp-for="Rg" class="form-control" />
+                <span asp-validation-for="Rg" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataNascimento" class="control-label"></label>
+                <input asp-for="DataNascimento" class="form-control" />
+                <span asp-validation-for="DataNascimento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NacionalidadeId" class="control-label"></label>
+                <select asp-for="NacionalidadeId" class="form-control" asp-items="ViewBag.NacionalidadeId"></select>
+                <span asp-validation-for="NacionalidadeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SexoId" class="control-label"></label>
+                <select asp-for="SexoId" class="form-control" asp-items="ViewBag.SexoId"></select>
+                <span asp-validation-for="SexoId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TipoPessoaId" class="control-label"></label>
+                <select asp-for="TipoPessoaId" class="form-control" asp-items="ViewBag.TipoPessoaId"></select>
+                <span asp-validation-for="TipoPessoaId" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Ativo" /> @Html.DisplayNameFor(model => model.Ativo)
+                </label>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="DataCriacao" class="control-label"></label>
+                <input asp-for="DataCriacao" class="form-control" />
+                <span asp-validation-for="DataCriacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
