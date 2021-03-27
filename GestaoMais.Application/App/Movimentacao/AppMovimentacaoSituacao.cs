@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace GestaoMais.Application.App.MovimentacaoSituacao
 {
-    public class AppMovimentacaoSituacaoSituacao : IMovimentacaoSituacao
+    public class AppMovimentacaoSituacao : IMovimentacaoSituacao
     {
         Domain.Interfaces.Movimentacao.IMovimentacaoSituacao _DomainInterface;
 
-        public AppMovimentacaoSituacaoSituacao(Domain.Interfaces.Movimentacao.IMovimentacaoSituacao DomainInterface)
+        public AppMovimentacaoSituacao(Domain.Interfaces.Movimentacao.IMovimentacaoSituacao DomainInterface)
         {
             _DomainInterface = DomainInterface;
         }

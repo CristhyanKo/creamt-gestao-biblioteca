@@ -4,4 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GestaoMais.Application\GestaoMais.Application.csproj" />
+    <ProjectReference Include="..\GestaoMais.Domain\GestaoMais.Domain.csproj" />
+    <ProjectReference Include="..\GestaoMais.Infrastructure\GestaoMais.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
