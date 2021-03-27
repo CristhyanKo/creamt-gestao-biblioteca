@@ -46,10 +46,10 @@ namespace GestaoMais.Infrastructure.Configuration
 
         private string GetStrConn()
         {
-            var dataSource = "DESKTOP\\DESENVOLVIMENTO";
+            var dataSource = "DESKTOP-MPN10IM\\SQL";
             var database = "creamt-gestao-biblioteca";
             var user = "sa";
-            var password = "1234";
+            var password = "123456";
 
             return $"Data Source={dataSource};Initial Catalog={database};Integrated Security=False;User ID={user};Password={password};Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
         }
