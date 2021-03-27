@@ -63,7 +63,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LivroId,PessoaId,FuncionarioId,EmprestimoLocal,DataEmprestimo,DataLimiteDevolucao,DataDevolucao,MovimentacaoSituacaoId,Id,DataCriacao")] Entities.Entities.Movimentacao.Movimentacao movimentacao)
+        public async Task<IActionResult> Create([Bind("LivroId,PessoaId,FuncionarioId,EmprestimoLocal,DataEmprestimo,DataLimiteDevolucao,DataDevolucao,MovimentacaoSituacaoId,Id")] Entities.Entities.Movimentacao.Movimentacao movimentacao)
         {
             if (ModelState.IsValid)
             {
@@ -103,7 +103,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LivroId,PessoaId,FuncionarioId,EmprestimoLocal,DataEmprestimo,DataLimiteDevolucao,DataDevolucao,MovimentacaoSituacaoId,Id,DataCriacao")] Entities.Entities.Movimentacao.Movimentacao movimentacao)
+        public async Task<IActionResult> Edit(int id, [Bind("LivroId,PessoaId,FuncionarioId,EmprestimoLocal,DataEmprestimo,DataLimiteDevolucao,DataDevolucao,MovimentacaoSituacaoId,Id")] Entities.Entities.Movimentacao.Movimentacao movimentacao)
         {
             if (id != movimentacao.Id)
             {

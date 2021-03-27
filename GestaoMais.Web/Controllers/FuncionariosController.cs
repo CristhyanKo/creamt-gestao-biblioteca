@@ -7,14 +7,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces;
+using GestaoMais.Application.Interfaces.Pessoa;
 
 namespace GestaoMais.Web.Controllers
 {
     public class FuncionariosController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly IFuncionario _context;
 
-        public FuncionariosController(ContextBase context)
+        public FuncionariosController(IFuncionario context)
         {
             _context = context;
         }
@@ -22,8 +24,7 @@ namespace GestaoMais.Web.Controllers
         // GET: Funcionarios
         public async Task<IActionResult> Index()
         {
-            var contextBase = _context.Funcionario.Include(f => f.Pessoa);
-            return View(await contextBase.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: Funcionarios/Details/5
@@ -34,9 +35,7 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var funcionario = await _context.Funcionario
-                .Include(f => f.Pessoa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var funcionario = await _context.GetById((int)id);
             if (funcionario == null)
             {
                 return NotFound();
@@ -48,7 +47,7 @@ namespace GestaoMais.Web.Controllers
         // GET: Funcionarios/Create
         public IActionResult Create()
         {
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial");
+            ViewData["PessoaId"] = new SelectList("Id", "RazaoSocial");
             return View();
         }
 
@@ -57,15 +56,14 @@ namespace GestaoMais.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Matricula,PessoaId,Id,DataCriacao")] Funcionario funcionario)
+        public async Task<IActionResult> Create([Bind("Matricula,PessoaId,Id")] Funcionario funcionario)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(funcionario);
-                await _context.SaveChangesAsync();
+                await _context.Add(funcionario);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", funcionario.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", funcionario.PessoaId);
             return View(funcionario);
         }
 
@@ -77,12 +75,12 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var funcionario = await _context.Funcionario.FindAsync(id);
+            var funcionario = await _context.GetById((int)id);
             if (funcionario == null)
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", funcionario.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", funcionario.PessoaId);
             return View(funcionario);
         }
 
@@ -91,7 +89,7 @@ namespace GestaoMais.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Matricula,PessoaId,Id,DataCriacao")] Funcionario funcionario)
+        public async Task<IActionResult> Edit(int id, [Bind("Matricula,PessoaId,Id")] Funcionario funcionario)
         {
             if (id != funcionario.Id)
             {
@@ -102,12 +100,11 @@ namespace GestaoMais.Web.Controllers
             {
                 try
                 {
-                    _context.Update(funcionario);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(funcionario);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FuncionarioExists(funcionario.Id))
+                    if (!await FuncionarioExists(funcionario.Id))
                     {
                         return NotFound();
                     }
@@ -118,7 +115,7 @@ namespace GestaoMais.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", funcionario.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", funcionario.PessoaId);
             return View(funcionario);
         }
 
@@ -130,9 +127,7 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var funcionario = await _context.Funcionario
-                .Include(f => f.Pessoa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var funcionario = await _context.GetById((int)id);
             if (funcionario == null)
             {
                 return NotFound();
@@ -146,15 +141,15 @@ namespace GestaoMais.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var funcionario = await _context.Funcionario.FindAsync(id);
-            _context.Funcionario.Remove(funcionario);
-            await _context.SaveChangesAsync();
+            var funcionario = await _context.GetById(id);
+            await _context.Delete(funcionario);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FuncionarioExists(int id)
+        private async Task<bool> FuncionarioExists(int id)
         {
-            return _context.Funcionario.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }

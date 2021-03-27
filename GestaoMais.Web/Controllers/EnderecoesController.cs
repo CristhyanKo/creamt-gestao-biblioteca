@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces;
 
 namespace GestaoMais.Web.Controllers
 {
     public class EnderecoesController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly IEndereco _context;
 
-        public EnderecoesController(ContextBase context)
+        public EnderecoesController(IEndereco context)
         {
             _context = context;
         }
@@ -22,7 +23,7 @@ namespace GestaoMais.Web.Controllers
         // GET: Enderecoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Endereco.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: Enderecoes/Details/5
@@ -33,8 +34,7 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var endereco = await _context.Endereco
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var endereco = await _context.GetById((int)id);
             if (endereco == null)
             {
                 return NotFound();
@@ -54,12 +54,11 @@ namespace GestaoMais.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Logradouro,Bairro,Municipio,Cep,Numero,Id,DataCriacao")] Endereco endereco)
+        public async Task<IActionResult> Create([Bind("Logradouro,Bairro,Municipio,Cep,Numero,Id")] Endereco endereco)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(endereco);
-                await _context.SaveChangesAsync();
+                await _context.Add(endereco);
                 return RedirectToAction(nameof(Index));
             }
             return View(endereco);
@@ -73,7 +72,7 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var endereco = await _context.Endereco.FindAsync(id);
+            var endereco = await _context.GetById((int)id);
             if (endereco == null)
             {
                 return NotFound();
@@ -86,7 +85,7 @@ namespace GestaoMais.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Logradouro,Bairro,Municipio,Cep,Numero,Id,DataCriacao")] Endereco endereco)
+        public async Task<IActionResult> Edit(int id, [Bind("Logradouro,Bairro,Municipio,Cep,Numero,Id")] Endereco endereco)
         {
             if (id != endereco.Id)
             {
@@ -97,12 +96,11 @@ namespace GestaoMais.Web.Controllers
             {
                 try
                 {
-                    _context.Update(endereco);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(endereco);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EnderecoExists(endereco.Id))
+                    if (!await EnderecoExists(endereco.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +122,7 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var endereco = await _context.Endereco
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var endereco = await _context.GetById((int)id);
             if (endereco == null)
             {
                 return NotFound();
@@ -139,15 +136,15 @@ namespace GestaoMais.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var endereco = await _context.Endereco.FindAsync(id);
-            _context.Endereco.Remove(endereco);
-            await _context.SaveChangesAsync();
+            var endereco = await _context.GetById(id);
+            await _context.Delete(endereco);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EnderecoExists(int id)
+        private async Task<bool> EnderecoExists(int id)
         {
-            return _context.Endereco.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }

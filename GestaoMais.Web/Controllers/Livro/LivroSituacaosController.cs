@@ -54,7 +54,7 @@ namespace GestaoMais.Web.Controllers.Livro
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Nome,Id,DataCriacao")] LivroSituacao livroSituacao)
+        public async Task<IActionResult> Create([Bind("Nome,Id")] LivroSituacao livroSituacao)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace GestaoMais.Web.Controllers.Livro
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Nome,Id,DataCriacao")] LivroSituacao livroSituacao)
+        public async Task<IActionResult> Edit(int id, [Bind("Nome,Id")] LivroSituacao livroSituacao)
         {
             if (id != livroSituacao.Id)
             {

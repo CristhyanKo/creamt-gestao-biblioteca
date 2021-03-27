@@ -16,11 +16,7 @@
                 <label asp-for="PessoaId" class="control-label"></label>
                 <select asp-for="PessoaId" class ="form-control" asp-items="ViewBag.PessoaId"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="DataCriacao" class="control-label"></label>
-                <input asp-for="DataCriacao" class="form-control" />
-                <span asp-validation-for="DataCriacao" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

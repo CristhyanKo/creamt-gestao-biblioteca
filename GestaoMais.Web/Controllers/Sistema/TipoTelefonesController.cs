@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Sistema;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces.Sistema;
 
 namespace GestaoMais.Web.Controllers.Sistema
 {
     public class TipoTelefonesController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly ITipoTelefone _context;
 
-        public TipoTelefonesController(ContextBase context)
+        public TipoTelefonesController(ITipoTelefone context)
         {
             _context = context;
         }
@@ -22,7 +23,7 @@ namespace GestaoMais.Web.Controllers.Sistema
         // GET: TipoTelefones
         public async Task<IActionResult> Index()
         {
-            return View(await _context.TipoTelefone.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: TipoTelefones/Details/5
@@ -33,8 +34,7 @@ namespace GestaoMais.Web.Controllers.Sistema
                 return NotFound();
             }
 
-            var tipoTelefone = await _context.TipoTelefone
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var tipoTelefone = await _context.GetById((int)id);
             if (tipoTelefone == null)
             {
                 return NotFound();
@@ -54,12 +54,11 @@ namespace GestaoMais.Web.Controllers.Sistema
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Descricao,Id,DataCriacao")] TipoTelefone tipoTelefone)
+        public async Task<IActionResult> Create([Bind("Descricao,Id")] TipoTelefone tipoTelefone)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tipoTelefone);
-                await _context.SaveChangesAsync();
+                await _context.Add(tipoTelefone);
                 return RedirectToAction(nameof(Index));
             }
             return View(tipoTelefone);
@@ -73,7 +72,7 @@ namespace GestaoMais.Web.Controllers.Sistema
                 return NotFound();
             }
 
-            var tipoTelefone = await _context.TipoTelefone.FindAsync(id);
+            var tipoTelefone = await _context.GetById((int)id);
             if (tipoTelefone == null)
             {
                 return NotFound();
@@ -86,7 +85,7 @@ namespace GestaoMais.Web.Controllers.Sistema
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Descricao,Id,DataCriacao")] TipoTelefone tipoTelefone)
+        public async Task<IActionResult> Edit(int id, [Bind("Descricao,Id")] TipoTelefone tipoTelefone)
         {
             if (id != tipoTelefone.Id)
             {
@@ -97,12 +96,11 @@ namespace GestaoMais.Web.Controllers.Sistema
             {
                 try
                 {
-                    _context.Update(tipoTelefone);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(tipoTelefone);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TipoTelefoneExists(tipoTelefone.Id))
+                    if (!await TipoTelefoneExists(tipoTelefone.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +122,7 @@ namespace GestaoMais.Web.Controllers.Sistema
                 return NotFound();
             }
 
-            var tipoTelefone = await _context.TipoTelefone
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var tipoTelefone = await _context.GetById((int)id);
             if (tipoTelefone == null)
             {
                 return NotFound();
@@ -139,15 +136,15 @@ namespace GestaoMais.Web.Controllers.Sistema
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tipoTelefone = await _context.TipoTelefone.FindAsync(id);
-            _context.TipoTelefone.Remove(tipoTelefone);
-            await _context.SaveChangesAsync();
+            var tipoTelefone = await _context.GetById(id);
+            await _context.Delete(tipoTelefone);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TipoTelefoneExists(int id)
+        private async Task<bool> TipoTelefoneExists(int id)
         {
-            return _context.TipoTelefone.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }

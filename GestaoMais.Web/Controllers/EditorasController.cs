@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces;
 
 namespace GestaoMais.Web.Controllers
 {
     public class EditorasController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly IEditora _context;
 
-        public EditorasController(ContextBase context)
+        public EditorasController(IEditora context)
         {
             _context = context;
         }
@@ -22,8 +23,7 @@ namespace GestaoMais.Web.Controllers
         // GET: Editoras
         public async Task<IActionResult> Index()
         {
-            var contextBase = _context.Editora.Include(e => e.Pessoa);
-            return View(await contextBase.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: Editoras/Details/5
@@ -34,9 +34,7 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var editora = await _context.Editora
-                .Include(e => e.Pessoa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var editora = await _context.GetById((int)id);
             if (editora == null)
             {
                 return NotFound();
@@ -48,7 +46,7 @@ namespace GestaoMais.Web.Controllers
         // GET: Editoras/Create
         public IActionResult Create()
         {
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial");
+            ViewData["PessoaId"] = new SelectList( "Id", "RazaoSocial");
             return View();
         }
 
@@ -57,15 +55,14 @@ namespace GestaoMais.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PessoaId,Id,DataCriacao")] Editora editora)
+        public async Task<IActionResult> Create([Bind("PessoaId,Id")] Editora editora)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(editora);
-                await _context.SaveChangesAsync();
+                await _context.Add(editora);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", editora.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", editora.PessoaId);
             return View(editora);
         }
 
@@ -77,12 +74,12 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var editora = await _context.Editora.FindAsync(id);
+            var editora = await _context.GetById((int)id);
             if (editora == null)
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", editora.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", editora.PessoaId);
             return View(editora);
         }
 
@@ -91,7 +88,7 @@ namespace GestaoMais.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PessoaId,Id,DataCriacao")] Editora editora)
+        public async Task<IActionResult> Edit(int id, [Bind("PessoaId,Id")] Editora editora)
         {
             if (id != editora.Id)
             {
@@ -102,12 +99,11 @@ namespace GestaoMais.Web.Controllers
             {
                 try
                 {
-                    _context.Update(editora);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(editora);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EditoraExists(editora.Id))
+                    if (!await EditoraExists(editora.Id))
                     {
                         return NotFound();
                     }
@@ -118,7 +114,7 @@ namespace GestaoMais.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", editora.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", editora.PessoaId);
             return View(editora);
         }
 
@@ -130,9 +126,7 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var editora = await _context.Editora
-                .Include(e => e.Pessoa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var editora = await _context.GetById((int)id);
             if (editora == null)
             {
                 return NotFound();
@@ -146,15 +140,15 @@ namespace GestaoMais.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var editora = await _context.Editora.FindAsync(id);
-            _context.Editora.Remove(editora);
-            await _context.SaveChangesAsync();
+            var editora = await _context.GetById(id);
+            await _context.Delete(editora);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EditoraExists(int id)
+        private async Task<bool> EditoraExists(int id)
         {
-            return _context.Editora.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }

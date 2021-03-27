@@ -61,7 +61,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NomeFantasia,RazaoSocial,CpfCnpj,Rg,DataNascimento,NacionalidadeId,SexoId,TipoPessoaId,Ativo,Id,DataCriacao")] Entities.Entities.Pessoa.Pessoa pessoa)
+        public async Task<IActionResult> Create([Bind("NomeFantasia,RazaoSocial,CpfCnpj,Rg,DataNascimento,NacionalidadeId,SexoId,TipoPessoaId,Ativo,Id")] Entities.Entities.Pessoa.Pessoa pessoa)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NomeFantasia,RazaoSocial,CpfCnpj,Rg,DataNascimento,NacionalidadeId,SexoId,TipoPessoaId,Ativo,Id,DataCriacao")] Entities.Entities.Pessoa.Pessoa pessoa)
+        public async Task<IActionResult> Edit(int id, [Bind("NomeFantasia,RazaoSocial,CpfCnpj,Rg,DataNascimento,NacionalidadeId,SexoId,TipoPessoaId,Ativo,Id")] Entities.Entities.Pessoa.Pessoa pessoa)
         {
             if (id != pessoa.Id)
             {

@@ -54,7 +54,7 @@ namespace GestaoMais.Web.Controllers.Sistema
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Descricao,Id,DataCriacao")] Nacionalidade nacionalidade)
+        public async Task<IActionResult> Create([Bind("Descricao,Id")] Nacionalidade nacionalidade)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace GestaoMais.Web.Controllers.Sistema
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Descricao,Id,DataCriacao")] Nacionalidade nacionalidade)
+        public async Task<IActionResult> Edit(int id, [Bind("Descricao,Id")] Nacionalidade nacionalidade)
         {
             if (id != nacionalidade.Id)
             {

@@ -63,7 +63,7 @@ namespace GestaoMais.Web.Controllers.Livro
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ISBN,Titulo,AutorId,EditoraId,Edicao,Ano,CategoriaId,LivroSituacaoId,Id,DataCriacao")] Entities.Entities.Livro.Livro livro)
+        public async Task<IActionResult> Create([Bind("ISBN,Titulo,AutorId,EditoraId,Edicao,Ano,CategoriaId,LivroSituacaoId,Id")] Entities.Entities.Livro.Livro livro)
         {
             if (ModelState.IsValid)
             {
@@ -103,7 +103,7 @@ namespace GestaoMais.Web.Controllers.Livro
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Titulo,AutorId,EditoraId,Edicao,Ano,CategoriaId,LivroSituacaoId,Id,DataCriacao")] Entities.Entities.Livro.Livro livro)
+        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Titulo,AutorId,EditoraId,Edicao,Ano,CategoriaId,LivroSituacaoId,Id")] Entities.Entities.Livro.Livro livro)
         {
             if (id != livro.Id)
             {
