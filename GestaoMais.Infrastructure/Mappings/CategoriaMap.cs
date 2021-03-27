@@ -10,6 +10,8 @@ namespace GestaoMais.Infrastructure.Mappings
         {
             builder.ToTable("Categoria");
             builder.HasKey(col => col.Id);
+            builder.Property(col => col.Nome).IsRequired();
+            builder.Property(col => col.Ativo).IsRequired();
         }
     }
 }

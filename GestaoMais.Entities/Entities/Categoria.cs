@@ -2,7 +2,7 @@
 {
     public class Categoria : Base
     {
-        public string Name { get; set; }
+        public string Nome { get; set; }
         public bool Ativo { get; set; }
     }
 }

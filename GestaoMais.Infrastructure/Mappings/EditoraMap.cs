@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GestaoMais.Infrastructure.Mappings
 {
-    public class FuncionarioMap : IEntityTypeConfiguration<Funcionario>
+    public class EditoraMap : IEntityTypeConfiguration<Editora>
     {
-        public void Configure(EntityTypeBuilder<Funcionario> builder)
+        public void Configure(EntityTypeBuilder<Editora> builder)
         {
-            builder.ToTable("Funcionario");
+            builder.ToTable("Editora");
             builder.HasKey(col => col.Id);
-            builder.Property(col => col.Matricula).IsRequired();
             builder.HasOne(col => col.Pessoa).WithMany().OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
+

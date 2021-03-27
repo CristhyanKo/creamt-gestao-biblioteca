@@ -1,9 +1,13 @@
-﻿using GestaoMais.Application.Interfaces;
-using GestaoMais.Entities.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using GestaoMais.Entities.Entities;
+using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces;
 
 namespace GestaoMais.Web.Controllers
 {
@@ -50,7 +54,7 @@ namespace GestaoMais.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Ativo,Id,DataCriacao")] Categoria categoria)
+        public async Task<IActionResult> Create([Bind("Nome,Ativo,Id,DataCriacao")] Categoria categoria)
         {
             if (ModelState.IsValid)
             {
@@ -81,7 +85,7 @@ namespace GestaoMais.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Ativo,Id,DataCriacao")] Categoria categoria)
+        public async Task<IActionResult> Edit(int id, [Bind("Nome,Ativo,Id,DataCriacao")] Categoria categoria)
         {
             if (id != categoria.Id)
             {

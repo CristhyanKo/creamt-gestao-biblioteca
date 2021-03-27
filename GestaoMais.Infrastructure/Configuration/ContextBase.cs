@@ -6,6 +6,8 @@ using GestaoMais.Entities.Entities.Sistema;
 using GestaoMais.Infrastructure.Mappings;
 using GestaoMais.Infrastructure.Mappings.Livro;
 using GestaoMais.Infrastructure.Mappings.Movimentacao;
+using GestaoMais.Infrastructure.Mappings.Pessoa;
+using GestaoMais.Infrastructure.Mappings.Sistema;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
@@ -53,9 +55,24 @@ namespace GestaoMais.Infrastructure.Configuration
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new CategoriaMap());
             modelBuilder.ApplyConfiguration(new LivroMap());
+            modelBuilder.ApplyConfiguration(new LivroSituacaoMap());
             modelBuilder.ApplyConfiguration(new MovimentacaoMap());
+            modelBuilder.ApplyConfiguration(new MovimentacaoSituacaoMap());
+            modelBuilder.ApplyConfiguration(new PessoaMap());
+            modelBuilder.ApplyConfiguration(new PessoaEmailMap());
+            modelBuilder.ApplyConfiguration(new PessoaEnderecoMap());
+            modelBuilder.ApplyConfiguration(new PessoaTelefoneMap());
+            modelBuilder.ApplyConfiguration(new NacionalidadeMap());
+            modelBuilder.ApplyConfiguration(new SexoMap());
+            modelBuilder.ApplyConfiguration(new TipoPessoaMap());
+            modelBuilder.ApplyConfiguration(new TipoTelefoneMap());
+            modelBuilder.ApplyConfiguration(new AlunoMap());
+            modelBuilder.ApplyConfiguration(new AutorMap());
+            modelBuilder.ApplyConfiguration(new CategoriaMap());
+            modelBuilder.ApplyConfiguration(new EditoraMap());
+            modelBuilder.ApplyConfiguration(new EnderecoMap());
+            modelBuilder.ApplyConfiguration(new FuncionarioMap());
 
             base.OnModelCreating(modelBuilder);
         }
