@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestaoMais.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoMais.Application", "GestaoMais.Application\GestaoMais.Application.csproj", "{A646E35F-1144-4204-862F-55940184B9D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoMais.Web", "GestaoMais.Web\GestaoMais.Web.csproj", "{5991177C-6162-4006-B922-A763D4CF9613}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{A646E35F-1144-4204-862F-55940184B9D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A646E35F-1144-4204-862F-55940184B9D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A646E35F-1144-4204-862F-55940184B9D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5991177C-6162-4006-B922-A763D4CF9613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5991177C-6162-4006-B922-A763D4CF9613}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5991177C-6162-4006-B922-A763D4CF9613}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5991177C-6162-4006-B922-A763D4CF9613}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +58,7 @@ Global
 		{6D15F642-29C9-43DC-A62A-7F70EF709662} = {975F0283-4164-43D2-9439-F37FA45E631A}
 		{D0A5CE39-61C2-40C1-B53F-09D5E8C01D15} = {550ADC8F-1BB3-45D0-B638-2B47E0C1D8C2}
 		{A646E35F-1144-4204-862F-55940184B9D8} = {610FE908-A8E3-4E36-8204-37313F107677}
+		{5991177C-6162-4006-B922-A763D4CF9613} = {621AE1FA-58E8-4F3B-B196-FADADFEC99AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {974FBCE3-006E-4220-946C-8A3D8A0BCF98}
