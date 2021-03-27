@@ -1,6 +1,6 @@
 ﻿namespace GestaoMais.Entities.Entities.Pessoa
 {
-    public class PessoaEndereco
+    public class PessoaEndereco : Base
     {
         public Pessoa Pessoa { get; set; }
         public int PessoaId { get; set; }

@@ -3,15 +3,22 @@ using GestaoMais.Entities.Entities.Livro;
 using GestaoMais.Entities.Entities.Movimentacao;
 using GestaoMais.Entities.Entities.Pessoa;
 using GestaoMais.Entities.Entities.Sistema;
+using GestaoMais.Infrastructure.Mappings;
+using GestaoMais.Infrastructure.Mappings.Livro;
+using GestaoMais.Infrastructure.Mappings.Movimentacao;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Linq;
 
 namespace GestaoMais.Infrastructure.Configuration
 {
     public class ContextBase : DbContext
     {
+        public ContextBase()
+        {
+
+        }
+
         public ContextBase(DbContextOptions<ContextBase> options) : base(options)
         {
             Database.EnsureCreated();
@@ -42,6 +49,15 @@ namespace GestaoMais.Infrastructure.Configuration
             if (!optionsBuilder.IsConfigured)
                 optionsBuilder.UseSqlServer(GetStrConn());
             base.OnConfiguring(optionsBuilder);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new CategoriaMap());
+            modelBuilder.ApplyConfiguration(new LivroMap());
+            modelBuilder.ApplyConfiguration(new MovimentacaoMap());
+
+            base.OnModelCreating(modelBuilder);
         }
 
         private string GetStrConn()
