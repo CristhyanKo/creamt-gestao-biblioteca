@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Livro;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces.Livro;
 
 namespace GestaoMais.Web.Controllers.Livro
 {
     public class LivroSituacaosController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly ILivroSituacao _context;
 
-        public LivroSituacaosController(ContextBase context)
+        public LivroSituacaosController(ILivroSituacao context)
         {
             _context = context;
         }
@@ -22,7 +23,7 @@ namespace GestaoMais.Web.Controllers.Livro
         // GET: LivroSituacaos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.LivroSituacao.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: LivroSituacaos/Details/5
@@ -33,8 +34,7 @@ namespace GestaoMais.Web.Controllers.Livro
                 return NotFound();
             }
 
-            var livroSituacao = await _context.LivroSituacao
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var livroSituacao = await _context.GetById((int)id);
             if (livroSituacao == null)
             {
                 return NotFound();
@@ -58,8 +58,7 @@ namespace GestaoMais.Web.Controllers.Livro
         {
             if (ModelState.IsValid)
             {
-                _context.Add(livroSituacao);
-                await _context.SaveChangesAsync();
+                await _context.Add(livroSituacao);
                 return RedirectToAction(nameof(Index));
             }
             return View(livroSituacao);
@@ -73,7 +72,7 @@ namespace GestaoMais.Web.Controllers.Livro
                 return NotFound();
             }
 
-            var livroSituacao = await _context.LivroSituacao.FindAsync(id);
+            var livroSituacao = await _context.GetById((int)id);
             if (livroSituacao == null)
             {
                 return NotFound();
@@ -97,12 +96,11 @@ namespace GestaoMais.Web.Controllers.Livro
             {
                 try
                 {
-                    _context.Update(livroSituacao);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(livroSituacao);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LivroSituacaoExists(livroSituacao.Id))
+                    if (!await LivroSituacaoExists(livroSituacao.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +122,7 @@ namespace GestaoMais.Web.Controllers.Livro
                 return NotFound();
             }
 
-            var livroSituacao = await _context.LivroSituacao
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var livroSituacao = await _context.GetById((int)id);
             if (livroSituacao == null)
             {
                 return NotFound();
@@ -139,15 +136,15 @@ namespace GestaoMais.Web.Controllers.Livro
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var livroSituacao = await _context.LivroSituacao.FindAsync(id);
-            _context.LivroSituacao.Remove(livroSituacao);
-            await _context.SaveChangesAsync();
+            var livroSituacao = await _context.GetById(id);
+            await _context.Delete(livroSituacao);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LivroSituacaoExists(int id)
+        private async Task<bool> LivroSituacaoExists(int id)
         {
-            return _context.LivroSituacao.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }

@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Movimentacao;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces.Movimentacao;
 
 namespace GestaoMais.Web.Controllers.Movimentacao
 {
     public class MovimentacaoSituacaosController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly IMovimentacaoSituacao _context;
 
-        public MovimentacaoSituacaosController(ContextBase context)
+        public MovimentacaoSituacaosController(IMovimentacaoSituacao context)
         {
             _context = context;
         }
@@ -22,7 +23,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
         // GET: MovimentacaoSituacaos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MovimentacaoSituacao.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: MovimentacaoSituacaos/Details/5
@@ -33,8 +34,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
                 return NotFound();
             }
 
-            var movimentacaoSituacao = await _context.MovimentacaoSituacao
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var movimentacaoSituacao = await _context.GetById((int)id);
             if (movimentacaoSituacao == null)
             {
                 return NotFound();
@@ -58,8 +58,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movimentacaoSituacao);
-                await _context.SaveChangesAsync();
+                await _context.Add(movimentacaoSituacao);
                 return RedirectToAction(nameof(Index));
             }
             return View(movimentacaoSituacao);
@@ -73,7 +72,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
                 return NotFound();
             }
 
-            var movimentacaoSituacao = await _context.MovimentacaoSituacao.FindAsync(id);
+            var movimentacaoSituacao = await _context.GetById((int)id);
             if (movimentacaoSituacao == null)
             {
                 return NotFound();
@@ -97,12 +96,11 @@ namespace GestaoMais.Web.Controllers.Movimentacao
             {
                 try
                 {
-                    _context.Update(movimentacaoSituacao);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(movimentacaoSituacao);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MovimentacaoSituacaoExists(movimentacaoSituacao.Id))
+                    if (!await MovimentacaoSituacaoExists(movimentacaoSituacao.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +122,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
                 return NotFound();
             }
 
-            var movimentacaoSituacao = await _context.MovimentacaoSituacao
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var movimentacaoSituacao = await _context.GetById((int)id);
             if (movimentacaoSituacao == null)
             {
                 return NotFound();
@@ -139,15 +136,15 @@ namespace GestaoMais.Web.Controllers.Movimentacao
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movimentacaoSituacao = await _context.MovimentacaoSituacao.FindAsync(id);
-            _context.MovimentacaoSituacao.Remove(movimentacaoSituacao);
-            await _context.SaveChangesAsync();
+            var movimentacaoSituacao = await _context.GetById(id);
+            await _context.Delete(movimentacaoSituacao);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MovimentacaoSituacaoExists(int id)
+        private async Task<bool> MovimentacaoSituacaoExists(int id)
         {
-            return _context.MovimentacaoSituacao.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }

@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Movimentacao;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces.Movimentacao;
 
 namespace GestaoMais.Web.Controllers.Movimentacao
 {
     public class MovimentacaosController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly IMovimentacao _context;
 
-        public MovimentacaosController(ContextBase context)
+        public MovimentacaosController(IMovimentacao context)
         {
             _context = context;
         }
@@ -22,8 +23,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
         // GET: Movimentacaos
         public async Task<IActionResult> Index()
         {
-            var contextBase = _context.Movimentacao.Include(m => m.Funcionario).Include(m => m.Livro).Include(m => m.MovimentacaoSituacao).Include(m => m.Pessoa);
-            return View(await contextBase.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: Movimentacaos/Details/5
@@ -34,12 +34,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
                 return NotFound();
             }
 
-            var movimentacao = await _context.Movimentacao
-                .Include(m => m.Funcionario)
-                .Include(m => m.Livro)
-                .Include(m => m.MovimentacaoSituacao)
-                .Include(m => m.Pessoa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var movimentacao = await _context.GetById((int)id);
             if (movimentacao == null)
             {
                 return NotFound();
@@ -51,10 +46,10 @@ namespace GestaoMais.Web.Controllers.Movimentacao
         // GET: Movimentacaos/Create
         public IActionResult Create()
         {
-            ViewData["FuncionarioId"] = new SelectList(_context.Funcionario, "Id", "Id");
-            ViewData["LivroId"] = new SelectList(_context.Livro, "Id", "Edicao");
-            ViewData["MovimentacaoSituacaoId"] = new SelectList(_context.MovimentacaoSituacao, "Id", "Nome");
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial");
+            ViewData["FuncionarioId"] = new SelectList("Id", "Id");
+            ViewData["LivroId"] = new SelectList("Id", "Edicao");
+            ViewData["MovimentacaoSituacaoId"] = new SelectList("Id", "Nome");
+            ViewData["PessoaId"] = new SelectList("Id", "RazaoSocial");
             return View();
         }
 
@@ -67,14 +62,13 @@ namespace GestaoMais.Web.Controllers.Movimentacao
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movimentacao);
-                await _context.SaveChangesAsync();
+                await _context.Add(movimentacao);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FuncionarioId"] = new SelectList(_context.Funcionario, "Id", "Id", movimentacao.FuncionarioId);
-            ViewData["LivroId"] = new SelectList(_context.Livro, "Id", "Edicao", movimentacao.LivroId);
-            ViewData["MovimentacaoSituacaoId"] = new SelectList(_context.MovimentacaoSituacao, "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", movimentacao.PessoaId);
+            ViewData["FuncionarioId"] = new SelectList(null, "Id", "Id", movimentacao.FuncionarioId);
+            ViewData["LivroId"] = new SelectList(null, "Id", "Edicao", movimentacao.LivroId);
+            ViewData["MovimentacaoSituacaoId"] = new SelectList(null, "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", movimentacao.PessoaId);
             return View(movimentacao);
         }
 
@@ -86,15 +80,15 @@ namespace GestaoMais.Web.Controllers.Movimentacao
                 return NotFound();
             }
 
-            var movimentacao = await _context.Movimentacao.FindAsync(id);
+            var movimentacao = await _context.GetById((int)id);
             if (movimentacao == null)
             {
                 return NotFound();
             }
-            ViewData["FuncionarioId"] = new SelectList(_context.Funcionario, "Id", "Id", movimentacao.FuncionarioId);
-            ViewData["LivroId"] = new SelectList(_context.Livro, "Id", "Edicao", movimentacao.LivroId);
-            ViewData["MovimentacaoSituacaoId"] = new SelectList(_context.MovimentacaoSituacao, "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", movimentacao.PessoaId);
+            ViewData["FuncionarioId"] = new SelectList(null, "Id", "Id", movimentacao.FuncionarioId);
+            ViewData["LivroId"] = new SelectList(null, "Id", "Edicao", movimentacao.LivroId);
+            ViewData["MovimentacaoSituacaoId"] = new SelectList(null, "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", movimentacao.PessoaId);
             return View(movimentacao);
         }
 
@@ -114,12 +108,11 @@ namespace GestaoMais.Web.Controllers.Movimentacao
             {
                 try
                 {
-                    _context.Update(movimentacao);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(movimentacao);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MovimentacaoExists(movimentacao.Id))
+                    if (!await MovimentacaoExists(movimentacao.Id))
                     {
                         return NotFound();
                     }
@@ -130,10 +123,10 @@ namespace GestaoMais.Web.Controllers.Movimentacao
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FuncionarioId"] = new SelectList(_context.Funcionario, "Id", "Id", movimentacao.FuncionarioId);
-            ViewData["LivroId"] = new SelectList(_context.Livro, "Id", "Edicao", movimentacao.LivroId);
-            ViewData["MovimentacaoSituacaoId"] = new SelectList(_context.MovimentacaoSituacao, "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", movimentacao.PessoaId);
+            ViewData["FuncionarioId"] = new SelectList(null, "Id", "Id", movimentacao.FuncionarioId);
+            ViewData["LivroId"] = new SelectList(null, "Id", "Edicao", movimentacao.LivroId);
+            ViewData["MovimentacaoSituacaoId"] = new SelectList(null, "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", movimentacao.PessoaId);
             return View(movimentacao);
         }
 
@@ -145,12 +138,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
                 return NotFound();
             }
 
-            var movimentacao = await _context.Movimentacao
-                .Include(m => m.Funcionario)
-                .Include(m => m.Livro)
-                .Include(m => m.MovimentacaoSituacao)
-                .Include(m => m.Pessoa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var movimentacao = await _context.GetById((int)id);
             if (movimentacao == null)
             {
                 return NotFound();
@@ -164,15 +152,15 @@ namespace GestaoMais.Web.Controllers.Movimentacao
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movimentacao = await _context.Movimentacao.FindAsync(id);
-            _context.Movimentacao.Remove(movimentacao);
-            await _context.SaveChangesAsync();
+            var movimentacao = await _context.GetById(id);
+            await _context.Delete(movimentacao);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MovimentacaoExists(int id)
+        private async Task<bool> MovimentacaoExists(int id)
         {
-            return _context.Movimentacao.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }

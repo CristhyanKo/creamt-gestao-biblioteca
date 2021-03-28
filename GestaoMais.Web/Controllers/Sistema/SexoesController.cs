@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Sistema;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces.Sistema;
 
 namespace GestaoMais.Web.Controllers.Sistema
 {
     public class SexoesController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly ISexo _context;
 
-        public SexoesController(ContextBase context)
+        public SexoesController(ISexo context)
         {
             _context = context;
         }
@@ -22,7 +23,7 @@ namespace GestaoMais.Web.Controllers.Sistema
         // GET: Sexoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Sexo.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: Sexoes/Details/5
@@ -33,8 +34,7 @@ namespace GestaoMais.Web.Controllers.Sistema
                 return NotFound();
             }
 
-            var sexo = await _context.Sexo
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var sexo = await _context.GetById((int)id);
             if (sexo == null)
             {
                 return NotFound();
@@ -58,8 +58,7 @@ namespace GestaoMais.Web.Controllers.Sistema
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sexo);
-                await _context.SaveChangesAsync();
+                await _context.Add(sexo);
                 return RedirectToAction(nameof(Index));
             }
             return View(sexo);
@@ -73,7 +72,7 @@ namespace GestaoMais.Web.Controllers.Sistema
                 return NotFound();
             }
 
-            var sexo = await _context.Sexo.FindAsync(id);
+            var sexo = await _context.GetById((int)id);
             if (sexo == null)
             {
                 return NotFound();
@@ -97,12 +96,11 @@ namespace GestaoMais.Web.Controllers.Sistema
             {
                 try
                 {
-                    _context.Update(sexo);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(sexo);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SexoExists(sexo.Id))
+                    if (!await SexoExists(sexo.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +122,7 @@ namespace GestaoMais.Web.Controllers.Sistema
                 return NotFound();
             }
 
-            var sexo = await _context.Sexo
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var sexo = await _context.GetById((int)id);
             if (sexo == null)
             {
                 return NotFound();
@@ -139,15 +136,15 @@ namespace GestaoMais.Web.Controllers.Sistema
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sexo = await _context.Sexo.FindAsync(id);
-            _context.Sexo.Remove(sexo);
-            await _context.SaveChangesAsync();
+            var sexo = await _context.GetById(id);
+            await _context.Delete(sexo);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SexoExists(int id)
+        private async Task<bool> SexoExists(int id)
         {
-            return _context.Sexo.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }

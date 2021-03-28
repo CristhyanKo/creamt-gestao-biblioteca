@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Pessoa;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces.Pessoa;
 
 namespace GestaoMais.Web.Controllers.Pessoa
 {
     public class PessoaEmailsController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly IPessoaEmail _context;
 
-        public PessoaEmailsController(ContextBase context)
+        public PessoaEmailsController(IPessoaEmail context)
         {
             _context = context;
         }
@@ -22,8 +23,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // GET: PessoaEmails
         public async Task<IActionResult> Index()
         {
-            var contextBase = _context.PessoaEmail.Include(p => p.Pessoa);
-            return View(await contextBase.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: PessoaEmails/Details/5
@@ -34,9 +34,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 return NotFound();
             }
 
-            var pessoaEmail = await _context.PessoaEmail
-                .Include(p => p.Pessoa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pessoaEmail = await _context.GetById((int)id);
             if (pessoaEmail == null)
             {
                 return NotFound();
@@ -48,7 +46,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // GET: PessoaEmails/Create
         public IActionResult Create()
         {
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial");
+            ViewData["PessoaId"] = new SelectList("Id", "RazaoSocial");
             return View();
         }
 
@@ -61,11 +59,10 @@ namespace GestaoMais.Web.Controllers.Pessoa
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pessoaEmail);
-                await _context.SaveChangesAsync();
+                await _context.Add(pessoaEmail);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", pessoaEmail.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaEmail.PessoaId);
             return View(pessoaEmail);
         }
 
@@ -77,12 +74,12 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 return NotFound();
             }
 
-            var pessoaEmail = await _context.PessoaEmail.FindAsync(id);
+            var pessoaEmail = await _context.GetById((int)id);
             if (pessoaEmail == null)
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", pessoaEmail.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaEmail.PessoaId);
             return View(pessoaEmail);
         }
 
@@ -102,12 +99,11 @@ namespace GestaoMais.Web.Controllers.Pessoa
             {
                 try
                 {
-                    _context.Update(pessoaEmail);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(pessoaEmail);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PessoaEmailExists(pessoaEmail.Id))
+                    if (!await PessoaEmailExists(pessoaEmail.Id))
                     {
                         return NotFound();
                     }
@@ -118,7 +114,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", pessoaEmail.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaEmail.PessoaId);
             return View(pessoaEmail);
         }
 
@@ -130,9 +126,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 return NotFound();
             }
 
-            var pessoaEmail = await _context.PessoaEmail
-                .Include(p => p.Pessoa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pessoaEmail = await _context.GetById((int)id);
             if (pessoaEmail == null)
             {
                 return NotFound();
@@ -146,15 +140,15 @@ namespace GestaoMais.Web.Controllers.Pessoa
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pessoaEmail = await _context.PessoaEmail.FindAsync(id);
-            _context.PessoaEmail.Remove(pessoaEmail);
-            await _context.SaveChangesAsync();
+            var pessoaEmail = await _context.GetById(id);
+            await _context.Delete(pessoaEmail);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PessoaEmailExists(int id)
+        private async Task<bool> PessoaEmailExists(int id)
         {
-            return _context.PessoaEmail.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }

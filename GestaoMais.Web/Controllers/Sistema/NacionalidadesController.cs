@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Sistema;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces.Sistema;
 
 namespace GestaoMais.Web.Controllers.Sistema
 {
     public class NacionalidadesController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly INacionalidade _context;
 
-        public NacionalidadesController(ContextBase context)
+        public NacionalidadesController(INacionalidade context)
         {
             _context = context;
         }
@@ -22,7 +23,7 @@ namespace GestaoMais.Web.Controllers.Sistema
         // GET: Nacionalidades
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Nacionalidade.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: Nacionalidades/Details/5
@@ -33,8 +34,7 @@ namespace GestaoMais.Web.Controllers.Sistema
                 return NotFound();
             }
 
-            var nacionalidade = await _context.Nacionalidade
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var nacionalidade = await _context.GetById((int)id);
             if (nacionalidade == null)
             {
                 return NotFound();
@@ -58,8 +58,7 @@ namespace GestaoMais.Web.Controllers.Sistema
         {
             if (ModelState.IsValid)
             {
-                _context.Add(nacionalidade);
-                await _context.SaveChangesAsync();
+                await _context.Add(nacionalidade);
                 return RedirectToAction(nameof(Index));
             }
             return View(nacionalidade);
@@ -73,7 +72,7 @@ namespace GestaoMais.Web.Controllers.Sistema
                 return NotFound();
             }
 
-            var nacionalidade = await _context.Nacionalidade.FindAsync(id);
+            var nacionalidade = await _context.GetById((int)id);
             if (nacionalidade == null)
             {
                 return NotFound();
@@ -97,12 +96,11 @@ namespace GestaoMais.Web.Controllers.Sistema
             {
                 try
                 {
-                    _context.Update(nacionalidade);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(nacionalidade);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NacionalidadeExists(nacionalidade.Id))
+                    if (!await NacionalidadeExists(nacionalidade.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +122,7 @@ namespace GestaoMais.Web.Controllers.Sistema
                 return NotFound();
             }
 
-            var nacionalidade = await _context.Nacionalidade
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var nacionalidade = await _context.GetById((int)id);
             if (nacionalidade == null)
             {
                 return NotFound();
@@ -139,15 +136,15 @@ namespace GestaoMais.Web.Controllers.Sistema
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var nacionalidade = await _context.Nacionalidade.FindAsync(id);
-            _context.Nacionalidade.Remove(nacionalidade);
-            await _context.SaveChangesAsync();
+            var nacionalidade = await _context.GetById(id);
+            await _context.Delete(nacionalidade);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool NacionalidadeExists(int id)
+        private async Task<bool> NacionalidadeExists(int id)
         {
-            return _context.Nacionalidade.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }

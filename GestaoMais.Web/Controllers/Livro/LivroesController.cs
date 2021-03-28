@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Livro;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces.Livro;
 
 namespace GestaoMais.Web.Controllers.Livro
 {
     public class LivroesController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly ILivro _context;
 
-        public LivroesController(ContextBase context)
+        public LivroesController(ILivro context)
         {
             _context = context;
         }
@@ -22,8 +23,7 @@ namespace GestaoMais.Web.Controllers.Livro
         // GET: Livroes
         public async Task<IActionResult> Index()
         {
-            var contextBase = _context.Livro.Include(l => l.Autor).Include(l => l.Categoria).Include(l => l.Editora).Include(l => l.LivroSituacao);
-            return View(await contextBase.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: Livroes/Details/5
@@ -34,12 +34,7 @@ namespace GestaoMais.Web.Controllers.Livro
                 return NotFound();
             }
 
-            var livro = await _context.Livro
-                .Include(l => l.Autor)
-                .Include(l => l.Categoria)
-                .Include(l => l.Editora)
-                .Include(l => l.LivroSituacao)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var livro = await _context.GetById((int)id);
             if (livro == null)
             {
                 return NotFound();
@@ -51,10 +46,10 @@ namespace GestaoMais.Web.Controllers.Livro
         // GET: Livroes/Create
         public IActionResult Create()
         {
-            ViewData["AutorId"] = new SelectList(_context.Autor, "Id", "Id");
-            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Nome");
-            ViewData["EditoraId"] = new SelectList(_context.Editora, "Id", "Id");
-            ViewData["LivroSituacaoId"] = new SelectList(_context.LivroSituacao, "Id", "Nome");
+            ViewData["AutorId"] = new SelectList("Id", "Id");
+            ViewData["CategoriaId"] = new SelectList("Id", "Nome");
+            ViewData["EditoraId"] = new SelectList("Id", "Id");
+            ViewData["LivroSituacaoId"] = new SelectList("Id", "Nome");
             return View();
         }
 
@@ -67,14 +62,13 @@ namespace GestaoMais.Web.Controllers.Livro
         {
             if (ModelState.IsValid)
             {
-                _context.Add(livro);
-                await _context.SaveChangesAsync();
+                await _context.Add(livro);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AutorId"] = new SelectList(_context.Autor, "Id", "Id", livro.AutorId);
-            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Nome", livro.CategoriaId);
-            ViewData["EditoraId"] = new SelectList(_context.Editora, "Id", "Id", livro.EditoraId);
-            ViewData["LivroSituacaoId"] = new SelectList(_context.LivroSituacao, "Id", "Nome", livro.LivroSituacaoId);
+            ViewData["AutorId"] = new SelectList(null, "Id", "Id", livro.AutorId);
+            ViewData["CategoriaId"] = new SelectList(null, "Id", "Nome", livro.CategoriaId);
+            ViewData["EditoraId"] = new SelectList(null, "Id", "Id", livro.EditoraId);
+            ViewData["LivroSituacaoId"] = new SelectList(null, "Id", "Nome", livro.LivroSituacaoId);
             return View(livro);
         }
 
@@ -86,15 +80,15 @@ namespace GestaoMais.Web.Controllers.Livro
                 return NotFound();
             }
 
-            var livro = await _context.Livro.FindAsync(id);
+            var livro = await _context.GetById((int)id);
             if (livro == null)
             {
                 return NotFound();
             }
-            ViewData["AutorId"] = new SelectList(_context.Autor, "Id", "Id", livro.AutorId);
-            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Nome", livro.CategoriaId);
-            ViewData["EditoraId"] = new SelectList(_context.Editora, "Id", "Id", livro.EditoraId);
-            ViewData["LivroSituacaoId"] = new SelectList(_context.LivroSituacao, "Id", "Nome", livro.LivroSituacaoId);
+            ViewData["AutorId"] = new SelectList(null, "Id", "Id", livro.AutorId);
+            ViewData["CategoriaId"] = new SelectList(null, "Id", "Nome", livro.CategoriaId);
+            ViewData["EditoraId"] = new SelectList(null, "Id", "Id", livro.EditoraId);
+            ViewData["LivroSituacaoId"] = new SelectList(null, "Id", "Nome", livro.LivroSituacaoId);
             return View(livro);
         }
 
@@ -114,12 +108,11 @@ namespace GestaoMais.Web.Controllers.Livro
             {
                 try
                 {
-                    _context.Update(livro);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(livro);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LivroExists(livro.Id))
+                    if (!await LivroExists(livro.Id))
                     {
                         return NotFound();
                     }
@@ -130,10 +123,10 @@ namespace GestaoMais.Web.Controllers.Livro
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AutorId"] = new SelectList(_context.Autor, "Id", "Id", livro.AutorId);
-            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Nome", livro.CategoriaId);
-            ViewData["EditoraId"] = new SelectList(_context.Editora, "Id", "Id", livro.EditoraId);
-            ViewData["LivroSituacaoId"] = new SelectList(_context.LivroSituacao, "Id", "Nome", livro.LivroSituacaoId);
+            ViewData["AutorId"] = new SelectList(null, "Id", "Id", livro.AutorId);
+            ViewData["CategoriaId"] = new SelectList(null, "Id", "Nome", livro.CategoriaId);
+            ViewData["EditoraId"] = new SelectList(null, "Id", "Id", livro.EditoraId);
+            ViewData["LivroSituacaoId"] = new SelectList(null, "Id", "Nome", livro.LivroSituacaoId);
             return View(livro);
         }
 
@@ -145,12 +138,7 @@ namespace GestaoMais.Web.Controllers.Livro
                 return NotFound();
             }
 
-            var livro = await _context.Livro
-                .Include(l => l.Autor)
-                .Include(l => l.Categoria)
-                .Include(l => l.Editora)
-                .Include(l => l.LivroSituacao)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var livro = await _context.GetById((int)id);
             if (livro == null)
             {
                 return NotFound();
@@ -164,15 +152,15 @@ namespace GestaoMais.Web.Controllers.Livro
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var livro = await _context.Livro.FindAsync(id);
-            _context.Livro.Remove(livro);
-            await _context.SaveChangesAsync();
+            var livro = await _context.GetById(id);
+            await _context.Delete(livro);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LivroExists(int id)
+        private async Task<bool> LivroExists(int id)
         {
-            return _context.Livro.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }

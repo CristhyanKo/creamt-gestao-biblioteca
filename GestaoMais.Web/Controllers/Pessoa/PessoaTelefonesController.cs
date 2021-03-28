@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Pessoa;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces.Pessoa;
 
 namespace GestaoMais.Web.Controllers.Pessoa
 {
     public class PessoaTelefonesController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly IPessoaTelefone _context;
 
-        public PessoaTelefonesController(ContextBase context)
+        public PessoaTelefonesController(IPessoaTelefone context)
         {
             _context = context;
         }
@@ -22,8 +23,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // GET: PessoaTelefones
         public async Task<IActionResult> Index()
         {
-            var contextBase = _context.PessoaTelefone.Include(p => p.Pessoa).Include(p => p.TipoTelefone);
-            return View(await contextBase.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: PessoaTelefones/Details/5
@@ -34,10 +34,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 return NotFound();
             }
 
-            var pessoaTelefone = await _context.PessoaTelefone
-                .Include(p => p.Pessoa)
-                .Include(p => p.TipoTelefone)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pessoaTelefone = await _context.GetById((int)id);
             if (pessoaTelefone == null)
             {
                 return NotFound();
@@ -49,8 +46,8 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // GET: PessoaTelefones/Create
         public IActionResult Create()
         {
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial");
-            ViewData["TipoTelefoneId"] = new SelectList(_context.TipoTelefone, "Id", "Descricao");
+            ViewData["PessoaId"] = new SelectList( "Id", "RazaoSocial");
+            ViewData["TipoTelefoneId"] = new SelectList( "Id", "Descricao");
             return View();
         }
 
@@ -63,12 +60,11 @@ namespace GestaoMais.Web.Controllers.Pessoa
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pessoaTelefone);
-                await _context.SaveChangesAsync();
+                await _context.Add(pessoaTelefone);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", pessoaTelefone.PessoaId);
-            ViewData["TipoTelefoneId"] = new SelectList(_context.TipoTelefone, "Id", "Descricao", pessoaTelefone.TipoTelefoneId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaTelefone.PessoaId);
+            ViewData["TipoTelefoneId"] = new SelectList(null, "Id", "Descricao", pessoaTelefone.TipoTelefoneId);
             return View(pessoaTelefone);
         }
 
@@ -80,13 +76,13 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 return NotFound();
             }
 
-            var pessoaTelefone = await _context.PessoaTelefone.FindAsync(id);
+            var pessoaTelefone = await _context.GetById((int)id);
             if (pessoaTelefone == null)
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", pessoaTelefone.PessoaId);
-            ViewData["TipoTelefoneId"] = new SelectList(_context.TipoTelefone, "Id", "Descricao", pessoaTelefone.TipoTelefoneId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaTelefone.PessoaId);
+            ViewData["TipoTelefoneId"] = new SelectList(null, "Id", "Descricao", pessoaTelefone.TipoTelefoneId);
             return View(pessoaTelefone);
         }
 
@@ -106,12 +102,11 @@ namespace GestaoMais.Web.Controllers.Pessoa
             {
                 try
                 {
-                    _context.Update(pessoaTelefone);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(pessoaTelefone);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PessoaTelefoneExists(pessoaTelefone.Id))
+                    if (!await PessoaTelefoneExists(pessoaTelefone.Id))
                     {
                         return NotFound();
                     }
@@ -122,8 +117,8 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", pessoaTelefone.PessoaId);
-            ViewData["TipoTelefoneId"] = new SelectList(_context.TipoTelefone, "Id", "Descricao", pessoaTelefone.TipoTelefoneId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaTelefone.PessoaId);
+            ViewData["TipoTelefoneId"] = new SelectList(null, "Id", "Descricao", pessoaTelefone.TipoTelefoneId);
             return View(pessoaTelefone);
         }
 
@@ -135,10 +130,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 return NotFound();
             }
 
-            var pessoaTelefone = await _context.PessoaTelefone
-                .Include(p => p.Pessoa)
-                .Include(p => p.TipoTelefone)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pessoaTelefone = await _context.GetById((int)id);
             if (pessoaTelefone == null)
             {
                 return NotFound();
@@ -152,15 +144,15 @@ namespace GestaoMais.Web.Controllers.Pessoa
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pessoaTelefone = await _context.PessoaTelefone.FindAsync(id);
-            _context.PessoaTelefone.Remove(pessoaTelefone);
-            await _context.SaveChangesAsync();
+            var pessoaTelefone = await _context.GetById(id);
+            await _context.Delete(pessoaTelefone);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PessoaTelefoneExists(int id)
+        private async Task<bool> PessoaTelefoneExists(int id)
         {
-            return _context.PessoaTelefone.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }

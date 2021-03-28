@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Pessoa;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces.Pessoa;
 
 namespace GestaoMais.Web.Controllers.Pessoa
 {
     public class PessoaEnderecoesController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly IPessoaEndereco _context;
 
-        public PessoaEnderecoesController(ContextBase context)
+        public PessoaEnderecoesController(IPessoaEndereco context)
         {
             _context = context;
         }
@@ -22,8 +23,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // GET: PessoaEnderecoes
         public async Task<IActionResult> Index()
         {
-            var contextBase = _context.PessoaEndereco.Include(p => p.Endereco).Include(p => p.Pessoa);
-            return View(await contextBase.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: PessoaEnderecoes/Details/5
@@ -34,10 +34,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 return NotFound();
             }
 
-            var pessoaEndereco = await _context.PessoaEndereco
-                .Include(p => p.Endereco)
-                .Include(p => p.Pessoa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pessoaEndereco = await _context.GetById((int)id);
             if (pessoaEndereco == null)
             {
                 return NotFound();
@@ -49,8 +46,8 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // GET: PessoaEnderecoes/Create
         public IActionResult Create()
         {
-            ViewData["EnderecoId"] = new SelectList(_context.Endereco, "Id", "Bairro");
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial");
+            ViewData["EnderecoId"] = new SelectList("Id", "Bairro");
+            ViewData["PessoaId"] = new SelectList("Id", "RazaoSocial");
             return View();
         }
 
@@ -63,12 +60,11 @@ namespace GestaoMais.Web.Controllers.Pessoa
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pessoaEndereco);
-                await _context.SaveChangesAsync();
+                await _context.Add(pessoaEndereco);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EnderecoId"] = new SelectList(_context.Endereco, "Id", "Bairro", pessoaEndereco.EnderecoId);
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", pessoaEndereco.PessoaId);
+            ViewData["EnderecoId"] = new SelectList(null, "Id", "Bairro", pessoaEndereco.EnderecoId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaEndereco.PessoaId);
             return View(pessoaEndereco);
         }
 
@@ -80,13 +76,13 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 return NotFound();
             }
 
-            var pessoaEndereco = await _context.PessoaEndereco.FindAsync(id);
+            var pessoaEndereco = await _context.GetById((int)id);
             if (pessoaEndereco == null)
             {
                 return NotFound();
             }
-            ViewData["EnderecoId"] = new SelectList(_context.Endereco, "Id", "Bairro", pessoaEndereco.EnderecoId);
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", pessoaEndereco.PessoaId);
+            ViewData["EnderecoId"] = new SelectList(null, "Id", "Bairro", pessoaEndereco.EnderecoId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaEndereco.PessoaId);
             return View(pessoaEndereco);
         }
 
@@ -106,12 +102,11 @@ namespace GestaoMais.Web.Controllers.Pessoa
             {
                 try
                 {
-                    _context.Update(pessoaEndereco);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(pessoaEndereco);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PessoaEnderecoExists(pessoaEndereco.Id))
+                    if (!await PessoaEnderecoExists(pessoaEndereco.Id))
                     {
                         return NotFound();
                     }
@@ -122,8 +117,8 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EnderecoId"] = new SelectList(_context.Endereco, "Id", "Bairro", pessoaEndereco.EnderecoId);
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", pessoaEndereco.PessoaId);
+            ViewData["EnderecoId"] = new SelectList(null, "Id", "Bairro", pessoaEndereco.EnderecoId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaEndereco.PessoaId);
             return View(pessoaEndereco);
         }
 
@@ -135,10 +130,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 return NotFound();
             }
 
-            var pessoaEndereco = await _context.PessoaEndereco
-                .Include(p => p.Endereco)
-                .Include(p => p.Pessoa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pessoaEndereco = await _context.GetById((int)id);
             if (pessoaEndereco == null)
             {
                 return NotFound();
@@ -152,15 +144,15 @@ namespace GestaoMais.Web.Controllers.Pessoa
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pessoaEndereco = await _context.PessoaEndereco.FindAsync(id);
-            _context.PessoaEndereco.Remove(pessoaEndereco);
-            await _context.SaveChangesAsync();
+            var pessoaEndereco = await _context.GetById(id);
+            await _context.Delete(pessoaEndereco);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PessoaEnderecoExists(int id)
+        private async Task<bool> PessoaEnderecoExists(int id)
         {
-            return _context.PessoaEndereco.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }
