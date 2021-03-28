@@ -54,7 +54,6 @@ namespace GestaoMais.Web
             services.AddSingleton<IAluno, RepositoryAluno>();
             services.AddSingleton<IAutor, RepositoryAutor>();
             services.AddSingleton<ICategoria, RepositoryCategoria>();
-            services.AddSingleton<IEditora, RepositoryEditora>();
             services.AddSingleton<IEndereco, RepositoryEndereco>();
             services.AddSingleton<IFuncionario, RepositoryFuncionario>();
 
@@ -73,7 +72,6 @@ namespace GestaoMais.Web
             services.AddSingleton<Application.Interfaces.IAluno, AppAluno>();
             services.AddSingleton<Application.Interfaces.IAutor, AppAutor>();
             services.AddSingleton<Application.Interfaces.ICategoria, AppCategoria>();
-            services.AddSingleton<Application.Interfaces.IEditora, AppEditora>();
             services.AddSingleton<Application.Interfaces.IEndereco, AppEndereco>();
             services.AddSingleton<Application.Interfaces.IFuncionario, AppFuncionario>();
 

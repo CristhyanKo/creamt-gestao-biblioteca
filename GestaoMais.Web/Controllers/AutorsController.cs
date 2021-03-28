@@ -8,16 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities;
 using GestaoMais.Infrastructure.Configuration;
 using GestaoMais.Application.Interfaces;
+using GestaoMais.Application.Interfaces.Pessoa;
 
 namespace GestaoMais.Web.Controllers
 {
     public class AutorsController : Controller
     {
         private readonly IAutor _context;
+        private readonly IPessoa _contextPessoa;
 
-        public AutorsController(IAutor context)
+        public AutorsController(IAutor context, IPessoa contextPessoa)
         {
             _context = context;
+            _contextPessoa = contextPessoa;
         }
 
         // GET: Autors
@@ -44,9 +47,9 @@ namespace GestaoMais.Web.Controllers
         }
 
         // GET: Autors/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["PessoaId"] = new SelectList("Id", "RazaoSocial");
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.List(), "Id", "RazaoSocial");
             return View();
         }
 
@@ -62,7 +65,7 @@ namespace GestaoMais.Web.Controllers
                 await _context.Add(autor);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", autor.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.List(), "Id", "RazaoSocial", autor.PessoaId);
             return View(autor);
         }
 
@@ -79,7 +82,7 @@ namespace GestaoMais.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", autor.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.List(), "Id", "RazaoSocial", autor.PessoaId);
             return View(autor);
         }
 
@@ -114,7 +117,7 @@ namespace GestaoMais.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", autor.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.List(), "Id", "RazaoSocial", autor.PessoaId);
             return View(autor);
         }
 

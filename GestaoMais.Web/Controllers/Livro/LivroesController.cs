@@ -1,23 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GestaoMais.Application.Interfaces;
+using GestaoMais.Application.Interfaces.Livro;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GestaoMais.Entities.Entities.Livro;
-using GestaoMais.Infrastructure.Configuration;
-using GestaoMais.Application.Interfaces.Livro;
+using System.Threading.Tasks;
 
 namespace GestaoMais.Web.Controllers.Livro
 {
     public class LivroesController : Controller
     {
         private readonly ILivro _context;
+        private readonly IAutor _contextAutor;
+        private readonly ICategoria _contextCategoria;
+        private readonly ILivroSituacao _contextLivroSituacao;
 
-        public LivroesController(ILivro context)
+        public LivroesController(ILivro context, IAutor contextAutor, ICategoria contextCategoria,  ILivroSituacao contextLivroSituacao)
         {
             _context = context;
+            _contextAutor = contextAutor;
+            _contextCategoria = contextCategoria;
+            _contextLivroSituacao = contextLivroSituacao;
         }
 
         // GET: Livroes
@@ -44,12 +46,11 @@ namespace GestaoMais.Web.Controllers.Livro
         }
 
         // GET: Livroes/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["AutorId"] = new SelectList("Id", "Id");
-            ViewData["CategoriaId"] = new SelectList("Id", "Nome");
-            ViewData["EditoraId"] = new SelectList("Id", "Id");
-            ViewData["LivroSituacaoId"] = new SelectList("Id", "Nome");
+            ViewData["AutorId"] = new SelectList(await _contextAutor.List(), "Id", "Id");
+            ViewData["CategoriaId"] = new SelectList(await _contextCategoria.List(), "Id", "Nome");
+            ViewData["LivroSituacaoId"] = new SelectList(await _contextLivroSituacao.List(), "Id", "Nome");
             return View();
         }
 
@@ -58,17 +59,16 @@ namespace GestaoMais.Web.Controllers.Livro
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ISBN,Titulo,AutorId,EditoraId,Edicao,Ano,CategoriaId,LivroSituacaoId,Id")] Entities.Entities.Livro.Livro livro)
+        public async Task<IActionResult> Create([Bind("ISBN,Titulo,AutorId,Editora,Edicao,Ano,CategoriaId,LivroSituacaoId,Id")] Entities.Entities.Livro.Livro livro)
         {
             if (ModelState.IsValid)
             {
                 await _context.Add(livro);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AutorId"] = new SelectList(null, "Id", "Id", livro.AutorId);
-            ViewData["CategoriaId"] = new SelectList(null, "Id", "Nome", livro.CategoriaId);
-            ViewData["EditoraId"] = new SelectList(null, "Id", "Id", livro.EditoraId);
-            ViewData["LivroSituacaoId"] = new SelectList(null, "Id", "Nome", livro.LivroSituacaoId);
+            ViewData["AutorId"] = new SelectList(await _contextAutor.List(), "Id", "Id", livro.AutorId);
+            ViewData["CategoriaId"] = new SelectList(await _contextCategoria.List(), "Id", "Nome", livro.CategoriaId);
+            ViewData["LivroSituacaoId"] = new SelectList(await _contextLivroSituacao.List(), "Id", "Nome", livro.LivroSituacaoId);
             return View(livro);
         }
 
@@ -85,10 +85,9 @@ namespace GestaoMais.Web.Controllers.Livro
             {
                 return NotFound();
             }
-            ViewData["AutorId"] = new SelectList(null, "Id", "Id", livro.AutorId);
-            ViewData["CategoriaId"] = new SelectList(null, "Id", "Nome", livro.CategoriaId);
-            ViewData["EditoraId"] = new SelectList(null, "Id", "Id", livro.EditoraId);
-            ViewData["LivroSituacaoId"] = new SelectList(null, "Id", "Nome", livro.LivroSituacaoId);
+            ViewData["AutorId"] = new SelectList(await _contextAutor.List(), "Id", "Id", livro.AutorId);
+            ViewData["CategoriaId"] = new SelectList(await _contextCategoria.List(), "Id", "Nome", livro.CategoriaId);
+            ViewData["LivroSituacaoId"] = new SelectList(await _contextLivroSituacao.List(), "Id", "Nome", livro.LivroSituacaoId);
             return View(livro);
         }
 
@@ -97,7 +96,7 @@ namespace GestaoMais.Web.Controllers.Livro
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Titulo,AutorId,EditoraId,Edicao,Ano,CategoriaId,LivroSituacaoId,Id")] Entities.Entities.Livro.Livro livro)
+        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Titulo,AutorId,Editora,Edicao,Ano,CategoriaId,LivroSituacaoId,Id")] Entities.Entities.Livro.Livro livro)
         {
             if (id != livro.Id)
             {
@@ -123,10 +122,9 @@ namespace GestaoMais.Web.Controllers.Livro
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AutorId"] = new SelectList(null, "Id", "Id", livro.AutorId);
-            ViewData["CategoriaId"] = new SelectList(null, "Id", "Nome", livro.CategoriaId);
-            ViewData["EditoraId"] = new SelectList(null, "Id", "Id", livro.EditoraId);
-            ViewData["LivroSituacaoId"] = new SelectList(null, "Id", "Nome", livro.LivroSituacaoId);
+            ViewData["AutorId"] = new SelectList(await _contextAutor.List(), "Id", "Id", livro.AutorId);
+            ViewData["CategoriaId"] = new SelectList(await _contextCategoria.List(), "Id", "Nome", livro.CategoriaId);
+            ViewData["LivroSituacaoId"] = new SelectList(await _contextLivroSituacao.List(), "Id", "Nome", livro.LivroSituacaoId) ;
             return View(livro);
         }
 

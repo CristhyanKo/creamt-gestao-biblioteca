@@ -9,7 +9,7 @@ namespace GestaoMais.Infrastructure.Mappings.Pessoa
         {
             builder.ToTable("Pessoa");
             builder.HasKey(col => col.Id);
-            builder.Property(col => col.RazaoSocial).IsRequired();
+            builder.Property(col => col.Nome).IsRequired();
             builder.Property(col => col.CpfCnpj).IsRequired();
             builder.Property(col => col.Rg).IsRequired();
             builder.Property(col => col.DataNascimento).IsRequired();

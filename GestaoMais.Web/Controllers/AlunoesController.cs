@@ -7,26 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities;
 using GestaoMais.Infrastructure.Configuration;
-using GestaoMais.Application.Interfaces;
 
 namespace GestaoMais.Web.Controllers
 {
-    public class EditorasController : Controller
+    public class AlunoesController : Controller
     {
-        private readonly IEditora _context;
+        private readonly ContextBase _context;
 
-        public EditorasController(IEditora context)
+        public AlunoesController(ContextBase context)
         {
             _context = context;
         }
 
-        // GET: Editoras
+        // GET: Alunoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.List());
+            var contextBase = _context.Aluno.Include(a => a.Pessoa);
+            return View(await contextBase.ToListAsync());
         }
 
-        // GET: Editoras/Details/5
+        // GET: Alunoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +34,42 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var editora = await _context.GetById((int)id);
-            if (editora == null)
+            var aluno = await _context.Aluno
+                .Include(a => a.Pessoa)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (aluno == null)
             {
                 return NotFound();
             }
 
-            return View(editora);
+            return View(aluno);
         }
 
-        // GET: Editoras/Create
+        // GET: Alunoes/Create
         public IActionResult Create()
         {
-            ViewData["PessoaId"] = new SelectList( "Id", "RazaoSocial");
+            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial");
             return View();
         }
 
-        // POST: Editoras/Create
+        // POST: Alunoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PessoaId,Id")] Editora editora)
+        public async Task<IActionResult> Create([Bind("Matricula,PessoaId,Id")] Aluno aluno)
         {
             if (ModelState.IsValid)
             {
-                await _context.Add(editora);
+                _context.Add(aluno);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", editora.PessoaId);
-            return View(editora);
+            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", aluno.PessoaId);
+            return View(aluno);
         }
 
-        // GET: Editoras/Edit/5
+        // GET: Alunoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,23 +77,23 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var editora = await _context.GetById((int)id);
-            if (editora == null)
+            var aluno = await _context.Aluno.FindAsync(id);
+            if (aluno == null)
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", editora.PessoaId);
-            return View(editora);
+            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", aluno.PessoaId);
+            return View(aluno);
         }
 
-        // POST: Editoras/Edit/5
+        // POST: Alunoes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PessoaId,Id")] Editora editora)
+        public async Task<IActionResult> Edit(int id, [Bind("Matricula,PessoaId,Id")] Aluno aluno)
         {
-            if (id != editora.Id)
+            if (id != aluno.Id)
             {
                 return NotFound();
             }
@@ -99,11 +102,12 @@ namespace GestaoMais.Web.Controllers
             {
                 try
                 {
-                    await _context.Update(editora);
+                    _context.Update(aluno);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await EditoraExists(editora.Id))
+                    if (!AlunoExists(aluno.Id))
                     {
                         return NotFound();
                     }
@@ -114,11 +118,11 @@ namespace GestaoMais.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", editora.PessoaId);
-            return View(editora);
+            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", aluno.PessoaId);
+            return View(aluno);
         }
 
-        // GET: Editoras/Delete/5
+        // GET: Alunoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,29 +130,31 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var editora = await _context.GetById((int)id);
-            if (editora == null)
+            var aluno = await _context.Aluno
+                .Include(a => a.Pessoa)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (aluno == null)
             {
                 return NotFound();
             }
 
-            return View(editora);
+            return View(aluno);
         }
 
-        // POST: Editoras/Delete/5
+        // POST: Alunoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var editora = await _context.GetById(id);
-            await _context.Delete(editora);
+            var aluno = await _context.Aluno.FindAsync(id);
+            _context.Aluno.Remove(aluno);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task<bool> EditoraExists(int id)
+        private bool AlunoExists(int id)
         {
-            var obj = await _context.GetById(id);
-            return obj != null;
+            return _context.Aluno.Any(e => e.Id == id);
         }
     }
 }

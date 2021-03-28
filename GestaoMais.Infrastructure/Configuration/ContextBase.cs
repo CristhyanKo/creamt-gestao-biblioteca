@@ -41,7 +41,6 @@ namespace GestaoMais.Infrastructure.Configuration
         public DbSet<Aluno> Aluno { get; set; }
         public DbSet<Autor> Autor { get; set; }
         public DbSet<Categoria> Categoria { get; set; }
-        public DbSet<Editora> Editora { get; set; }
         public DbSet<Endereco> Endereco { get; set; }
         public DbSet<Funcionario> Funcionario { get; set; }
 
@@ -70,7 +69,6 @@ namespace GestaoMais.Infrastructure.Configuration
             modelBuilder.ApplyConfiguration(new AlunoMap());
             modelBuilder.ApplyConfiguration(new AutorMap());
             modelBuilder.ApplyConfiguration(new CategoriaMap());
-            modelBuilder.ApplyConfiguration(new EditoraMap());
             modelBuilder.ApplyConfiguration(new EnderecoMap());
             modelBuilder.ApplyConfiguration(new FuncionarioMap());
 

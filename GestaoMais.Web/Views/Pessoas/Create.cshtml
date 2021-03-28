@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+
 
 <h4>Pessoa</h4>
 <hr />
@@ -13,14 +13,9 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="NomeFantasia" class="control-label"></label>
-                <input asp-for="NomeFantasia" class="form-control" />
-                <span asp-validation-for="NomeFantasia" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RazaoSocial" class="control-label"></label>
-                <input asp-for="RazaoSocial" class="form-control" />
-                <span asp-validation-for="RazaoSocial" class="text-danger"></span>
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CpfCnpj" class="control-label"></label>
@@ -38,16 +33,19 @@
                 <span asp-validation-for="DataNascimento" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NacionalidadeId" class="control-label"></label>
-                <select asp-for="NacionalidadeId" class ="form-control" asp-items="ViewBag.NacionalidadeId"></select>
+                <label asp-for="Nacionalidade" class="control-label"></label>
+                <a class="addNew" asp-area="" asp-controller="Nacionalidades" asp-action="Create">Adicionar novo(a)</a>
+                <select asp-for="NacionalidadeId" class="form-control" asp-items="ViewBag.NacionalidadeId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="SexoId" class="control-label"></label>
-                <select asp-for="SexoId" class ="form-control" asp-items="ViewBag.SexoId"></select>
+                <label asp-for="Sexo" class="control-label"></label>
+                <a class="addNew" asp-area="" asp-controller="Sexoes" asp-action="Create">Adicionar novo(a)</a>
+                <select asp-for="SexoId" class="form-control" asp-items="ViewBag.SexoId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="TipoPessoaId" class="control-label"></label>
-                <select asp-for="TipoPessoaId" class ="form-control" asp-items="ViewBag.TipoPessoaId"></select>
+                <a class="addNew" asp-area="" asp-controller="TipoPessoas" asp-action="Create">Adicionar novo(a)</a>
+                <select asp-for="TipoPessoaId" class="form-control" asp-items="ViewBag.TipoPessoaId"></select>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">

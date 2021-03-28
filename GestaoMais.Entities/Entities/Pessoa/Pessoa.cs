@@ -5,9 +5,8 @@ namespace GestaoMais.Entities.Entities.Pessoa
 {
     public class Pessoa : Base
     {
-        public string NomeFantasia { get; set; }
-        public string RazaoSocial { get; set; }
-        public int CpfCnpj { get; set; }
+        public string Nome { get; set; }
+        public string CpfCnpj { get; set; }
         public string Rg { get; set; }
         public DateTime DataNascimento { get; set; }
         public Nacionalidade Nacionalidade { get; set; }

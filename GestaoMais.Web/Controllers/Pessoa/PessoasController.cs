@@ -8,16 +8,23 @@ using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Pessoa;
 using GestaoMais.Infrastructure.Configuration;
 using GestaoMais.Application.Interfaces.Pessoa;
+using GestaoMais.Application.Interfaces.Sistema;
 
 namespace GestaoMais.Web.Controllers.Pessoa
 {
     public class PessoasController : Controller
     {
         private readonly IPessoa _context;
+        private readonly INacionalidade _contextNacionalidade;
+        private readonly ISexo _contextSexo;
+        private readonly ITipoPessoa _contextTipoPessoa;
 
-        public PessoasController(IPessoa context)
+        public PessoasController(IPessoa context, INacionalidade contextNacionalidade, ISexo contextSexo, ITipoPessoa contextTipoPessoa)
         {
             _context = context;
+            _contextNacionalidade = contextNacionalidade;
+            _contextSexo = contextSexo;
+            _contextTipoPessoa = contextTipoPessoa;
         }
 
         // GET: Pessoas
@@ -44,11 +51,11 @@ namespace GestaoMais.Web.Controllers.Pessoa
         }
 
         // GET: Pessoas/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["NacionalidadeId"] = new SelectList("Id", "Descricao");
-            ViewData["SexoId"] = new SelectList("Id", "Descricao");
-            ViewData["TipoPessoaId"] = new SelectList("Id", "Descricao");
+            ViewData["NacionalidadeId"] = new SelectList(await _contextNacionalidade.List(), "Id", "Descricao");
+            ViewData["SexoId"] = new SelectList(await _contextSexo.List(),"Id", "Descricao");
+            ViewData["TipoPessoaId"] = new SelectList(await _contextTipoPessoa.List(),"Id", "Descricao");
             return View();
         }
 
@@ -57,16 +64,16 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NomeFantasia,RazaoSocial,CpfCnpj,Rg,DataNascimento,NacionalidadeId,SexoId,TipoPessoaId,Ativo,Id")] Entities.Entities.Pessoa.Pessoa pessoa)
+        public async Task<IActionResult> Create([Bind("Nome,CpfCnpj,Rg,DataNascimento,NacionalidadeId,SexoId,TipoPessoaId,Ativo,Id")] Entities.Entities.Pessoa.Pessoa pessoa)
         {
             if (ModelState.IsValid)
             {
                 await _context.Add(pessoa);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["NacionalidadeId"] = new SelectList(null, "Id", "Descricao", pessoa.NacionalidadeId);
-            ViewData["SexoId"] = new SelectList(null, "Id", "Descricao", pessoa.SexoId);
-            ViewData["TipoPessoaId"] = new SelectList(null, "Id", "Descricao", pessoa.TipoPessoaId);
+            ViewData["NacionalidadeId"] = new SelectList(await _contextNacionalidade.List(), "Id", "Descricao", pessoa.NacionalidadeId);
+            ViewData["SexoId"] = new SelectList(await _contextSexo.List(), "Id", "Descricao", pessoa.SexoId);
+            ViewData["TipoPessoaId"] = new SelectList(await _contextTipoPessoa.List(), "Id", "Descricao", pessoa.TipoPessoaId);
             return View(pessoa);
         }
 
@@ -83,9 +90,9 @@ namespace GestaoMais.Web.Controllers.Pessoa
             {
                 return NotFound();
             }
-            ViewData["NacionalidadeId"] = new SelectList(null, "Id", "Descricao", pessoa.NacionalidadeId);
-            ViewData["SexoId"] = new SelectList(null, "Id", "Descricao", pessoa.SexoId);
-            ViewData["TipoPessoaId"] = new SelectList(null, "Id", "Descricao", pessoa.TipoPessoaId);
+            ViewData["NacionalidadeId"] = new SelectList(await _contextNacionalidade.List(), "Id", "Descricao", pessoa.NacionalidadeId);
+            ViewData["SexoId"] = new SelectList(await _contextSexo.List(), "Id", "Descricao", pessoa.SexoId);
+            ViewData["TipoPessoaId"] = new SelectList(await _contextTipoPessoa.List(), "Id", "Descricao", pessoa.TipoPessoaId);
             return View(pessoa);
         }
 
@@ -94,7 +101,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NomeFantasia,RazaoSocial,CpfCnpj,Rg,DataNascimento,NacionalidadeId,SexoId,TipoPessoaId,Ativo,Id")] Entities.Entities.Pessoa.Pessoa pessoa)
+        public async Task<IActionResult> Edit(int id, [Bind("Nome,CpfCnpj,Rg,DataNascimento,NacionalidadeId,SexoId,TipoPessoaId,Ativo,Id")] Entities.Entities.Pessoa.Pessoa pessoa)
         {
             if (id != pessoa.Id)
             {
@@ -120,9 +127,9 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["NacionalidadeId"] = new SelectList(null, "Id", "Descricao", pessoa.NacionalidadeId);
-            ViewData["SexoId"] = new SelectList(null, "Id", "Descricao", pessoa.SexoId);
-            ViewData["TipoPessoaId"] = new SelectList(null, "Id", "Descricao", pessoa.TipoPessoaId);
+            ViewData["NacionalidadeId"] = new SelectList(await _contextNacionalidade.List(), "Id", "Descricao", pessoa.NacionalidadeId);
+            ViewData["SexoId"] = new SelectList(await _contextSexo.List(), "Id", "Descricao", pessoa.SexoId);
+            ViewData["TipoPessoaId"] = new SelectList(await _contextTipoPessoa.List(), "Id", "Descricao", pessoa.TipoPessoaId);
             return View(pessoa);
         }
 
