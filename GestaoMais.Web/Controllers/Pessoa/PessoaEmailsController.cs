@@ -46,7 +46,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // GET: PessoaEmails/Create
         public IActionResult Create()
         {
-            ViewData["PessoaId"] = new SelectList("Id", "RazaoSocial");
+            ViewData["PessoaId"] = new SelectList("Id", "Nome");
             return View();
         }
 
@@ -62,7 +62,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 await _context.Add(pessoaEmail);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaEmail.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", pessoaEmail.PessoaId);
             return View(pessoaEmail);
         }
 
@@ -79,7 +79,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaEmail.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", pessoaEmail.PessoaId);
             return View(pessoaEmail);
         }
 
@@ -114,7 +114,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaEmail.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", pessoaEmail.PessoaId);
             return View(pessoaEmail);
         }
 

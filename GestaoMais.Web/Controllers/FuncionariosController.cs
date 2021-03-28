@@ -15,10 +15,12 @@ namespace GestaoMais.Web.Controllers
     public class FuncionariosController : Controller
     {
         private readonly IFuncionario _context;
+        private readonly IPessoa _contextPessoa;
 
-        public FuncionariosController(IFuncionario context)
+        public FuncionariosController(IFuncionario context,IPessoa contextPessoa)
         {
             _context = context;
+            _contextPessoa = contextPessoa;
         }
 
         // GET: Funcionarios
@@ -45,9 +47,9 @@ namespace GestaoMais.Web.Controllers
         }
 
         // GET: Funcionarios/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["PessoaId"] = new SelectList("Id", "RazaoSocial");
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(),"Id", "Nome");
             return View();
         }
 
@@ -63,7 +65,7 @@ namespace GestaoMais.Web.Controllers
                 await _context.Add(funcionario);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", funcionario.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", funcionario.PessoaId);
             return View(funcionario);
         }
 
@@ -80,7 +82,7 @@ namespace GestaoMais.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", funcionario.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", funcionario.PessoaId);
             return View(funcionario);
         }
 
@@ -115,7 +117,7 @@ namespace GestaoMais.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", funcionario.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", funcionario.PessoaId);
             return View(funcionario);
         }
 

@@ -48,8 +48,8 @@ namespace GestaoMais.Web.Controllers.Livro
         // GET: Livroes/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["AutorId"] = new SelectList(await _contextAutor.List(), "Id", "Id");
-            ViewData["CategoriaId"] = new SelectList(await _contextCategoria.List(), "Id", "Nome");
+            ViewData["AutorId"] = new SelectList(await _contextAutor.List(), "Id", "Pessoa.Nome");
+            ViewData["CategoriaId"] = new SelectList(await _contextCategoria.ListActive(), "Id", "Nome");
             ViewData["LivroSituacaoId"] = new SelectList(await _contextLivroSituacao.List(), "Id", "Nome");
             return View();
         }
@@ -66,8 +66,8 @@ namespace GestaoMais.Web.Controllers.Livro
                 await _context.Add(livro);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AutorId"] = new SelectList(await _contextAutor.List(), "Id", "Id", livro.AutorId);
-            ViewData["CategoriaId"] = new SelectList(await _contextCategoria.List(), "Id", "Nome", livro.CategoriaId);
+            ViewData["AutorId"] = new SelectList(await _contextAutor.List(), "Id", "Pessoa.Nome", livro.AutorId);
+            ViewData["CategoriaId"] = new SelectList(await _contextCategoria.ListActive(), "Id", "Nome", livro.CategoriaId);
             ViewData["LivroSituacaoId"] = new SelectList(await _contextLivroSituacao.List(), "Id", "Nome", livro.LivroSituacaoId);
             return View(livro);
         }
@@ -85,8 +85,8 @@ namespace GestaoMais.Web.Controllers.Livro
             {
                 return NotFound();
             }
-            ViewData["AutorId"] = new SelectList(await _contextAutor.List(), "Id", "Id", livro.AutorId);
-            ViewData["CategoriaId"] = new SelectList(await _contextCategoria.List(), "Id", "Nome", livro.CategoriaId);
+            ViewData["AutorId"] = new SelectList(await _contextAutor.List(), "Id", "Pessoa.Nome", livro.AutorId);
+            ViewData["CategoriaId"] = new SelectList(await _contextCategoria.ListActive(), "Id", "Nome", livro.CategoriaId);
             ViewData["LivroSituacaoId"] = new SelectList(await _contextLivroSituacao.List(), "Id", "Nome", livro.LivroSituacaoId);
             return View(livro);
         }
@@ -122,8 +122,8 @@ namespace GestaoMais.Web.Controllers.Livro
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AutorId"] = new SelectList(await _contextAutor.List(), "Id", "Id", livro.AutorId);
-            ViewData["CategoriaId"] = new SelectList(await _contextCategoria.List(), "Id", "Nome", livro.CategoriaId);
+            ViewData["AutorId"] = new SelectList(await _contextAutor.List(), "Id", "Pessoa.Nome", livro.AutorId);
+            ViewData["CategoriaId"] = new SelectList(await _contextCategoria.ListActive(), "Id", "Nome", livro.CategoriaId);
             ViewData["LivroSituacaoId"] = new SelectList(await _contextLivroSituacao.List(), "Id", "Nome", livro.LivroSituacaoId) ;
             return View(livro);
         }

@@ -49,7 +49,7 @@ namespace GestaoMais.Web.Controllers
         // GET: Autors/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["PessoaId"] = new SelectList(await _contextPessoa.List(), "Id", "RazaoSocial");
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace GestaoMais.Web.Controllers
                 await _context.Add(autor);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(await _contextPessoa.List(), "Id", "RazaoSocial", autor.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", autor.PessoaId);
             return View(autor);
         }
 
@@ -82,7 +82,7 @@ namespace GestaoMais.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(await _contextPessoa.List(), "Id", "RazaoSocial", autor.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", autor.PessoaId);
             return View(autor);
         }
 
@@ -117,7 +117,7 @@ namespace GestaoMais.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(await _contextPessoa.List(), "Id", "RazaoSocial", autor.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", autor.PessoaId);
             return View(autor);
         }
 

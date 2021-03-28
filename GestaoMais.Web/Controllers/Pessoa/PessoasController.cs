@@ -12,24 +12,44 @@ using GestaoMais.Application.Interfaces.Sistema;
 
 namespace GestaoMais.Web.Controllers.Pessoa
 {
+    public class ViewModel
+    {
+        public Entities.Entities.Pessoa.Pessoa Pessoa { get; set; }
+        public PessoaTelefone PessoaTelefone { get; set; }
+        public PessoaEndereco PessoaEndereco { get; set; }
+        public IEnumerable<Entities.Entities.Pessoa.Pessoa> ListPessoa { get; set; }
+        public IEnumerable<PessoaTelefone> ListPessoaTelefone { get; set; }
+        public IEnumerable<PessoaEndereco> ListPessoaEndereco { get; set; }
+    }
+
     public class PessoasController : Controller
     {
         private readonly IPessoa _context;
         private readonly INacionalidade _contextNacionalidade;
         private readonly ISexo _contextSexo;
         private readonly ITipoPessoa _contextTipoPessoa;
+        private readonly IPessoaTelefone _contextPessoaTelefone;
+        private readonly IPessoaEndereco _contextPessoaEndereco;
 
-        public PessoasController(IPessoa context, INacionalidade contextNacionalidade, ISexo contextSexo, ITipoPessoa contextTipoPessoa)
+        public PessoasController(IPessoa context, INacionalidade contextNacionalidade, ISexo contextSexo, ITipoPessoa contextTipoPessoa, IPessoaTelefone contextPessoaTelefone, IPessoaEndereco contextPessoaEndereco)
         {
             _context = context;
             _contextNacionalidade = contextNacionalidade;
             _contextSexo = contextSexo;
             _contextTipoPessoa = contextTipoPessoa;
+            _contextPessoaTelefone = contextPessoaTelefone;
+            _contextPessoaEndereco = contextPessoaEndereco;
         }
+
+      
 
         // GET: Pessoas
         public async Task<IActionResult> Index()
         {
+            //ViewModel models = new ViewModel();
+            //models.Pessoa = await _context.List();
+            //models.PessoaTelefone = await _contextPessoaTelefone.List();
+            //models.PessoaEndereco = await _contextPessoaEndereco.List();
             return View(await _context.List());
         }
 
@@ -56,6 +76,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
             ViewData["NacionalidadeId"] = new SelectList(await _contextNacionalidade.List(), "Id", "Descricao");
             ViewData["SexoId"] = new SelectList(await _contextSexo.List(),"Id", "Descricao");
             ViewData["TipoPessoaId"] = new SelectList(await _contextTipoPessoa.List(),"Id", "Descricao");
+
             return View();
         }
 
@@ -93,7 +114,13 @@ namespace GestaoMais.Web.Controllers.Pessoa
             ViewData["NacionalidadeId"] = new SelectList(await _contextNacionalidade.List(), "Id", "Descricao", pessoa.NacionalidadeId);
             ViewData["SexoId"] = new SelectList(await _contextSexo.List(), "Id", "Descricao", pessoa.SexoId);
             ViewData["TipoPessoaId"] = new SelectList(await _contextTipoPessoa.List(), "Id", "Descricao", pessoa.TipoPessoaId);
-            return View(pessoa);
+
+            ViewModel models = new ViewModel();
+            models.Pessoa = pessoa;
+            models.ListPessoa = await _context.List();
+            models.ListPessoaTelefone = await _contextPessoaTelefone.List(pessoa.Id);
+
+            return View(models);
         }
 
         // POST: Pessoas/Edit/5

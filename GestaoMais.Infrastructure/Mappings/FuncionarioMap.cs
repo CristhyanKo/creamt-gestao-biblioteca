@@ -10,7 +10,7 @@ namespace GestaoMais.Infrastructure.Mappings
         {
             builder.ToTable("Funcionario");
             builder.HasKey(col => col.Id);
-            builder.Property(col => col.Matricula).IsRequired();
+            builder.Property(col => col.Matricula).IsRequired().ValueGeneratedOnAdd().HasDefaultValue(1);
             builder.HasOne(col => col.Pessoa).WithMany().OnDelete(DeleteBehavior.Restrict);
         }
     }

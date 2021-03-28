@@ -49,7 +49,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
             ViewData["FuncionarioId"] = new SelectList("Id", "Id");
             ViewData["LivroId"] = new SelectList("Id", "Edicao");
             ViewData["MovimentacaoSituacaoId"] = new SelectList("Id", "Nome");
-            ViewData["PessoaId"] = new SelectList("Id", "RazaoSocial");
+            ViewData["PessoaId"] = new SelectList("Id", "Nome");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
             ViewData["FuncionarioId"] = new SelectList(null, "Id", "Id", movimentacao.FuncionarioId);
             ViewData["LivroId"] = new SelectList(null, "Id", "Edicao", movimentacao.LivroId);
             ViewData["MovimentacaoSituacaoId"] = new SelectList(null, "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", movimentacao.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", movimentacao.PessoaId);
             return View(movimentacao);
         }
 
@@ -88,7 +88,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
             ViewData["FuncionarioId"] = new SelectList(null, "Id", "Id", movimentacao.FuncionarioId);
             ViewData["LivroId"] = new SelectList(null, "Id", "Edicao", movimentacao.LivroId);
             ViewData["MovimentacaoSituacaoId"] = new SelectList(null, "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", movimentacao.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", movimentacao.PessoaId);
             return View(movimentacao);
         }
 
@@ -126,7 +126,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
             ViewData["FuncionarioId"] = new SelectList(null, "Id", "Id", movimentacao.FuncionarioId);
             ViewData["LivroId"] = new SelectList(null, "Id", "Edicao", movimentacao.LivroId);
             ViewData["MovimentacaoSituacaoId"] = new SelectList(null, "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", movimentacao.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", movimentacao.PessoaId);
             return View(movimentacao);
         }
 

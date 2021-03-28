@@ -1,4 +1,5 @@
 ﻿using GestaoMais.Application.Interfaces.Pessoa;
+using GestaoMais.Entities.Entities.Pessoa;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,27 +14,32 @@ namespace GestaoMais.Application.App.Pessoa
             _DomainInterface = DomainInterface;
         }
 
-        public async Task Add(Entities.Entities.Pessoa.PessoaTelefone obj)
+        public async Task Add(PessoaTelefone obj)
         {
             await _DomainInterface.Add(obj);
         }
 
-        public async Task Delete(Entities.Entities.Pessoa.PessoaTelefone obj)
+        public async Task Delete(PessoaTelefone obj)
         {
             await _DomainInterface.Delete(obj);
         }
 
-        public async Task<Entities.Entities.Pessoa.PessoaTelefone> GetById(int id)
+        public async Task<PessoaTelefone> GetById(int id)
         {
             return await _DomainInterface.GetById(id);
         }
 
-        public async Task<List<Entities.Entities.Pessoa.PessoaTelefone>> List()
+        public async Task<List<PessoaTelefone>> List()
         {
             return await _DomainInterface.List();
         }
 
-        public async Task Update(Entities.Entities.Pessoa.PessoaTelefone obj)
+        public async Task<List<PessoaTelefone>> List(int id)
+        {
+            return await _DomainInterface.List(id);
+        }
+
+        public async Task Update(PessoaTelefone obj)
         {
             await _DomainInterface.Update(obj);
         }

@@ -10,7 +10,9 @@ using GestaoMais.Domain.Interfaces.Generics;
 using GestaoMais.Domain.Interfaces.Livro;
 using GestaoMais.Domain.Interfaces.Movimentacao;
 using GestaoMais.Domain.Interfaces.Pessoa;
+using GestaoMais.Domain.Interfaces.Services;
 using GestaoMais.Domain.Interfaces.Sistema;
+using GestaoMais.Domain.Services;
 using GestaoMais.Infrastructure.Repository.Generics;
 using GestaoMais.Infrastructure.Repository.Repositories;
 using GestaoMais.Infrastructure.Repository.Repositories.Livro;
@@ -74,6 +76,9 @@ namespace GestaoMais.Web
             services.AddSingleton<Application.Interfaces.ICategoria, AppCategoria>();
             services.AddSingleton<Application.Interfaces.IEndereco, AppEndereco>();
             services.AddSingleton<Application.Interfaces.IFuncionario, AppFuncionario>();
+
+            services.AddSingleton<IServiceCategoria, CategoriaService>();
+            services.AddSingleton<IServicePessoa, PessoaService>();
 
             services.AddControllersWithViews();
         }

@@ -47,7 +47,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         public IActionResult Create()
         {
             ViewData["EnderecoId"] = new SelectList("Id", "Bairro");
-            ViewData["PessoaId"] = new SelectList("Id", "RazaoSocial");
+            ViewData["PessoaId"] = new SelectList("Id", "Nome");
             return View();
         }
 
@@ -64,7 +64,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EnderecoId"] = new SelectList(null, "Id", "Bairro", pessoaEndereco.EnderecoId);
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaEndereco.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", pessoaEndereco.PessoaId);
             return View(pessoaEndereco);
         }
 
@@ -82,7 +82,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 return NotFound();
             }
             ViewData["EnderecoId"] = new SelectList(null, "Id", "Bairro", pessoaEndereco.EnderecoId);
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaEndereco.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", pessoaEndereco.PessoaId);
             return View(pessoaEndereco);
         }
 
@@ -118,7 +118,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EnderecoId"] = new SelectList(null, "Id", "Bairro", pessoaEndereco.EnderecoId);
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaEndereco.PessoaId);
+            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", pessoaEndereco.PessoaId);
             return View(pessoaEndereco);
         }
 

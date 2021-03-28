@@ -8,16 +8,27 @@ using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Pessoa;
 using GestaoMais.Infrastructure.Configuration;
 using GestaoMais.Application.Interfaces.Pessoa;
+using GestaoMais.Application.Interfaces.Sistema;
 
 namespace GestaoMais.Web.Controllers.Pessoa
 {
     public class PessoaTelefonesController : Controller
     {
         private readonly IPessoaTelefone _context;
+        private readonly IPessoa _contextPessoa;
+        private readonly ITipoTelefone _contextTipoTelefone;
 
-        public PessoaTelefonesController(IPessoaTelefone context)
+        public PessoaTelefonesController(IPessoaTelefone context, IPessoa contextPessoa, ITipoTelefone contextTipoTelefone)
         {
             _context = context;
+            _contextPessoa = contextPessoa;
+            _contextTipoTelefone = contextTipoTelefone;
+        }
+
+        // GET: PessoaTelefones/5
+        public async Task<IActionResult> Index(int? id)
+        {
+            return View(await _context.List((int)id));
         }
 
         // GET: PessoaTelefones
@@ -43,11 +54,11 @@ namespace GestaoMais.Web.Controllers.Pessoa
             return View(pessoaTelefone);
         }
 
-        // GET: PessoaTelefones/Create
-        public IActionResult Create()
+        // GET: PessoaTelefones/Create/5
+        public async Task<IActionResult> Create(int id)
         {
-            ViewData["PessoaId"] = new SelectList( "Id", "RazaoSocial");
-            ViewData["TipoTelefoneId"] = new SelectList( "Id", "Descricao");
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", id);
+            ViewData["TipoTelefoneId"] = new SelectList(await _contextTipoTelefone.List(), "Id", "Descricao");
             return View();
         }
 
@@ -60,11 +71,13 @@ namespace GestaoMais.Web.Controllers.Pessoa
         {
             if (ModelState.IsValid)
             {
+                pessoaTelefone.Id = 0;
                 await _context.Add(pessoaTelefone);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", "Pessoas", new { id = pessoaTelefone.PessoaId });
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaTelefone.PessoaId);
-            ViewData["TipoTelefoneId"] = new SelectList(null, "Id", "Descricao", pessoaTelefone.TipoTelefoneId);
+
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", pessoaTelefone.PessoaId);
+            ViewData["TipoTelefoneId"] = new SelectList(await _contextTipoTelefone.List(), "Id", "Descricao", pessoaTelefone.TipoTelefoneId);
             return View(pessoaTelefone);
         }
 
@@ -81,8 +94,8 @@ namespace GestaoMais.Web.Controllers.Pessoa
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaTelefone.PessoaId);
-            ViewData["TipoTelefoneId"] = new SelectList(null, "Id", "Descricao", pessoaTelefone.TipoTelefoneId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", pessoaTelefone.PessoaId);
+            ViewData["TipoTelefoneId"] = new SelectList(await _contextTipoTelefone.List(), "Id", "Descricao", pessoaTelefone.TipoTelefoneId);
             return View(pessoaTelefone);
         }
 
@@ -115,10 +128,10 @@ namespace GestaoMais.Web.Controllers.Pessoa
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", "Pessoas", new { id = pessoaTelefone.PessoaId });
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "RazaoSocial", pessoaTelefone.PessoaId);
-            ViewData["TipoTelefoneId"] = new SelectList(null, "Id", "Descricao", pessoaTelefone.TipoTelefoneId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", pessoaTelefone.PessoaId);
+            ViewData["TipoTelefoneId"] = new SelectList(await _contextTipoTelefone.List(), "Id", "Descricao", pessoaTelefone.TipoTelefoneId);
             return View(pessoaTelefone);
         }
 
@@ -146,7 +159,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         {
             var pessoaTelefone = await _context.GetById(id);
             await _context.Delete(pessoaTelefone);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Edit", "Pessoas", new { id = pessoaTelefone.PessoaId });
         }
 
         private async Task<bool> PessoaTelefoneExists(int id)

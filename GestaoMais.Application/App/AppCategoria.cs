@@ -9,10 +9,12 @@ namespace GestaoMais.Application.App
     {
 
         Domain.Interfaces.ICategoria _DomainInterface;
+        Domain.Interfaces.Services.IServiceCategoria _ServiceInterface;
 
-        public AppCategoria(Domain.Interfaces.ICategoria DomainInterface)
+        public AppCategoria(Domain.Interfaces.ICategoria DomainInterface, Domain.Interfaces.Services.IServiceCategoria ServiceInterface)
         {
             _DomainInterface = DomainInterface;
+            _ServiceInterface = ServiceInterface;
         }
         public async Task Add(Categoria obj)
         {
@@ -32,6 +34,11 @@ namespace GestaoMais.Application.App
         public async Task<List<Categoria>> List()
         {
             return await _DomainInterface.List();
+        }
+
+        public async Task<List<Categoria>> ListActive()
+        {
+            return await _ServiceInterface.ListActive();
         }
 
         public async Task Update(Categoria obj)

@@ -7,23 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities;
 using GestaoMais.Infrastructure.Configuration;
+using GestaoMais.Application.Interfaces;
+using GestaoMais.Application.Interfaces.Pessoa;
 
 namespace GestaoMais.Web.Controllers
 {
     public class AlunoesController : Controller
     {
-        private readonly ContextBase _context;
+        private readonly IAluno _context;
+        private readonly IPessoa _contextPessoa;
 
-        public AlunoesController(ContextBase context)
+        public AlunoesController(IAluno context, IPessoa contextPessoa)
         {
             _context = context;
+            _contextPessoa = contextPessoa;
         }
 
         // GET: Alunoes
         public async Task<IActionResult> Index()
         {
-            var contextBase = _context.Aluno.Include(a => a.Pessoa);
-            return View(await contextBase.ToListAsync());
+            return View(await _context.List());
         }
 
         // GET: Alunoes/Details/5
@@ -34,9 +37,7 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var aluno = await _context.Aluno
-                .Include(a => a.Pessoa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var aluno = await _context.GetById((int)id);
             if (aluno == null)
             {
                 return NotFound();
@@ -46,9 +47,9 @@ namespace GestaoMais.Web.Controllers
         }
 
         // GET: Alunoes/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial");
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome");
             return View();
         }
 
@@ -61,11 +62,10 @@ namespace GestaoMais.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(aluno);
-                await _context.SaveChangesAsync();
+                await _context.Add(aluno);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", aluno.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", aluno.PessoaId);
             return View(aluno);
         }
 
@@ -77,12 +77,12 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var aluno = await _context.Aluno.FindAsync(id);
+            var aluno = await _context.GetById((int) id);
             if (aluno == null)
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", aluno.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", aluno.PessoaId);
             return View(aluno);
         }
 
@@ -102,12 +102,11 @@ namespace GestaoMais.Web.Controllers
             {
                 try
                 {
-                    _context.Update(aluno);
-                    await _context.SaveChangesAsync();
+                    await _context.Update(aluno);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlunoExists(aluno.Id))
+                    if (!await AlunoExists(aluno.Id))
                     {
                         return NotFound();
                     }
@@ -118,7 +117,7 @@ namespace GestaoMais.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoa, "Id", "RazaoSocial", aluno.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", aluno.PessoaId);
             return View(aluno);
         }
 
@@ -130,9 +129,7 @@ namespace GestaoMais.Web.Controllers
                 return NotFound();
             }
 
-            var aluno = await _context.Aluno
-                .Include(a => a.Pessoa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var aluno = await _context.GetById((int) id);
             if (aluno == null)
             {
                 return NotFound();
@@ -146,15 +143,15 @@ namespace GestaoMais.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var aluno = await _context.Aluno.FindAsync(id);
-            _context.Aluno.Remove(aluno);
-            await _context.SaveChangesAsync();
+            var aluno = await _context.GetById(id);
+            await _context.Delete(aluno);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AlunoExists(int id)
+        private async Task<bool> AlunoExists(int id)
         {
-            return _context.Aluno.Any(e => e.Id == id);
+            var obj = await _context.GetById(id);
+            return obj != null;
         }
     }
 }
