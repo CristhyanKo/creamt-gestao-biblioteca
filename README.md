@@ -57,6 +57,5 @@ Defina o projeto GestaoMais.Web como o de inicialização.
 Presentation > GestaoMais.Web
 ```
 
-Após estas configurações basta iniciar o projeto.
-
+Após estas configurações basta iniciar o projeto, a geração do banco é automática com o seed de algumas informações básicas.
 
