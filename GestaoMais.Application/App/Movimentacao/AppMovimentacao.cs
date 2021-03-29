@@ -7,6 +7,7 @@ namespace GestaoMais.Application.App.Movimentacao
     public class AppMovimentacao : IMovimentacao
     {
         Domain.Interfaces.Movimentacao.IMovimentacao _DomainInterface;
+        Domain.Interfaces.Services.IServiceMovimentacao _ServiceInterface;
 
         public AppMovimentacao(Domain.Interfaces.Movimentacao.IMovimentacao DomainInterface)
         {
@@ -16,6 +17,11 @@ namespace GestaoMais.Application.App.Movimentacao
         public async Task Add(Entities.Entities.Movimentacao.Movimentacao obj)
         {
             await _DomainInterface.Add(obj);
+        }
+
+        public async Task AddMovimentacao(Entities.Entities.Movimentacao.Movimentacao obj)
+        {
+            await _ServiceInterface.AddMovimentacao(obj);
         }
 
         public async Task Delete(Entities.Entities.Movimentacao.Movimentacao obj)

@@ -73,7 +73,7 @@ namespace GestaoMais.Web.Controllers.Movimentacao
         {
             if (ModelState.IsValid)
             {
-                await _context.Add(movimentacao);
+                await _context.AddMovimentacao(movimentacao);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["FuncionarioId"] = new SelectList(await _contextFuncionario.List(), "Id", "Pessoa.Nome", movimentacao.FuncionarioId);
