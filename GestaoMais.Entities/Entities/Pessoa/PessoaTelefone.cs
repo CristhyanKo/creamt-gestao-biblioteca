@@ -8,7 +8,7 @@ namespace GestaoMais.Entities.Entities.Pessoa
         public int PessoaId { get; set; }
         public TipoTelefone TipoTelefone { get; set; }
         public int TipoTelefoneId { get; set; }
-        public int Ddd { get; set; }
+        public string Ddd { get; set; }
         public string Numero { get; set; }
         public bool Principal { get; set; }
     }

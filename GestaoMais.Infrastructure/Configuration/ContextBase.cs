@@ -70,6 +70,34 @@ namespace GestaoMais.Infrastructure.Configuration
             modelBuilder.ApplyConfiguration(new CategoriaMap());
             modelBuilder.ApplyConfiguration(new FuncionarioMap());
 
+            modelBuilder.Entity<Sexo>().HasData(
+                new Sexo { Id = 1, Descricao = "Masculino" },
+                new Sexo { Id = 2, Descricao = "Feminino" });
+
+            modelBuilder.Entity<TipoTelefone>().HasData(
+               new TipoTelefone { Id = 1, Descricao = "Particular" },
+               new TipoTelefone { Id = 2, Descricao = "Comercial" });
+
+            modelBuilder.Entity<Nacionalidade>().HasData(
+             new Nacionalidade { Id = 1, Descricao = "Brasileira" },
+             new Nacionalidade { Id = 2, Descricao = "Outra" });
+
+            modelBuilder.Entity<TipoPessoa>().HasData(
+             new TipoPessoa { Id = 1, Descricao = "Fisica" },
+             new TipoPessoa { Id = 2, Descricao = "Juridica" });
+
+            modelBuilder.Entity<LivroSituacao>().HasData(
+                new LivroSituacao { Id = 1, Nome = "Disponivel" },
+                new LivroSituacao { Id = 2, Nome = "Emprestado" },
+                new LivroSituacao { Id = 3, Nome = "Extraviado" },
+                new LivroSituacao { Id = 4, Nome = "Em Manutenção" });
+
+            modelBuilder.Entity<MovimentacaoSituacao>().HasData(
+               new MovimentacaoSituacao { Id = 1, Nome = "Emprestado" },
+               new MovimentacaoSituacao { Id = 2, Nome = "Atrasado" },
+               new MovimentacaoSituacao { Id = 3, Nome = "Devolvido" });
+
+
             base.OnModelCreating(modelBuilder);
         }
 
