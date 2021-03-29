@@ -10,6 +10,15 @@ Está aplicação foi desenvolvida inteiramente em .NET, com implementação da 
 - SQL Server, EF - Entity Framework
 - DDD, MVC 5
 
+## Resumo do desenvolvimento
+O projeto foi separado em 5 camadas, sendo elas:
+
+- **Entities** - Camada responsável por representar os modelos das tabelas do banco de dados.
+- **Domain** - Camada responsável por guardar toda a regra de negócio do projeto.
+- **Infra** - Camada responsável pelo acesso, comunicação e execução de comandos no banco de dados.
+- **Application** - Camada responsável por fazer a ponte entre o domínio da aplicação e a apresentação final, definindo quais métodos o projeto de apresentação poderá utilizar.
+- **Presentation** - Camada responsável em entregar uma interface para que o usuário final possa executar suas interações.
+
 ## Como usar
 
 Pré requisitos
@@ -45,14 +54,5 @@ Presentation > GestaoMais.Web
 ```
 
 Após estas configurações basta iniciar o projeto.
-
-## Resumo do desenvolvimento
-O projeto foi separado em 5 camadas, sendo elas:
-
-- **Entities** - Camada responsável por representar os modelos das tabelas do banco de dados.
-- **Domain** - Camada responsável por guardar toda a regra de negócio do projeto.
-- **Infra** - Camada responsável pelo acesso, comunicação e execução de comandos no banco de dados.
-- **Application** - Camada responsável por fazer a ponte entre o domínio da aplicação e a apresentação final, definindo quais métodos o projeto de apresentação poderá utilizar.
-- **Presentation** - Camada responsável em entregar uma interface para que o usuário final possa executar suas interações.
 
 
