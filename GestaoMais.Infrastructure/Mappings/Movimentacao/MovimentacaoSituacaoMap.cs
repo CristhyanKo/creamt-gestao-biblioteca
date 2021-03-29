@@ -1,9 +1,6 @@
 ﻿using GestaoMais.Entities.Entities.Movimentacao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GestaoMais.Infrastructure.Mappings.Movimentacao
 {

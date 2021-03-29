@@ -9,8 +9,6 @@ using GestaoMais.Infrastructure.Mappings.Movimentacao;
 using GestaoMais.Infrastructure.Mappings.Pessoa;
 using GestaoMais.Infrastructure.Mappings.Sistema;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
 
 namespace GestaoMais.Infrastructure.Configuration
 {

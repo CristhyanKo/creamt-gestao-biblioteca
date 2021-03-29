@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GestaoMais.Application.Interfaces.Pessoa;
+using GestaoMais.Entities.Entities.Pessoa;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GestaoMais.Entities.Entities.Pessoa;
-using GestaoMais.Infrastructure.Configuration;
-using GestaoMais.Application.Interfaces.Pessoa;
+using System.Threading.Tasks;
 
 namespace GestaoMais.Web.Controllers.Pessoa
 {

@@ -3,9 +3,6 @@ using GestaoMais.Entities.Entities;
 using GestaoMais.Infrastructure.Configuration;
 using GestaoMais.Infrastructure.Repository.Generics;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GestaoMais.Infrastructure.Repository.Repositories
 {

@@ -1,9 +1,7 @@
 ﻿using GestaoMais.Domain.Interfaces.Pessoa;
 using GestaoMais.Domain.Interfaces.Services;
 using GestaoMais.Entities.Entities.Pessoa;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GestaoMais.Domain.Services

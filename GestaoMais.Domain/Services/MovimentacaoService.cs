@@ -1,9 +1,6 @@
 ﻿using GestaoMais.Domain.Interfaces.Movimentacao;
 using GestaoMais.Domain.Interfaces.Services;
 using GestaoMais.Entities.Entities.Movimentacao;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GestaoMais.Domain.Services

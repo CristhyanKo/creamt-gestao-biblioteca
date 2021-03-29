@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GestaoMais.Application.Interfaces;
+using GestaoMais.Application.Interfaces.Livro;
+using GestaoMais.Application.Interfaces.Movimentacao;
+using GestaoMais.Application.Interfaces.Pessoa;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GestaoMais.Entities.Entities.Movimentacao;
-using GestaoMais.Infrastructure.Configuration;
-using GestaoMais.Application.Interfaces.Movimentacao;
-using GestaoMais.Application.Interfaces.Livro;
-using GestaoMais.Application.Interfaces.Pessoa;
-using GestaoMais.Application.Interfaces;
+using System.Threading.Tasks;
 
 namespace GestaoMais.Web.Controllers.Movimentacao
 {

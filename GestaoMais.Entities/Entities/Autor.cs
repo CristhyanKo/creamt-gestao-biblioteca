@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace GestaoMais.Entities.Entities
+﻿namespace GestaoMais.Entities.Entities
 {
     public class Autor : Base
     {
