@@ -32,7 +32,7 @@ Pré requisitos
 - [Visual Studio 2019 ou Visual Studio Code](https://visualstudio.microsoft.com/pt-br/thank-you-downloading-visual-studio/?sku=Community&rel=16)
 - [DotNet Core](https://dotnet.microsoft.com/download)
 
-Faça o download deste repositório e acesse a pasta de onde foi baixado o seu projeto, após o download execute o arquivo GestaoMais.sln
+Faça o download deste repositório e acesse a pasta de onde foi baixado o seu projeto, após o download execute o arquivo **GestaoMais.sln**
 
 Ao executar a solução dirija-se até o seguinte arquivo no Visual Studio:
 ```
