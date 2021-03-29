@@ -21,8 +21,17 @@
             <div class="navMenu">
                 <ul>
                     <a class="active" asp-area="" asp-controller="Home" asp-action="Index"><li>Inicio</li></a>
-                    <hr />
-                    <a asp-area="" asp-controller="Movimentacaos" asp-action="Index"><li>Movimentações</li></a>
+
+                    <li>
+                        <div class="navMenuMulti">
+                            <strong>Movimentação</strong>
+                            <hr />
+                            <ul>
+                                <a asp-area="" asp-controller="Movimentacaos" asp-action="Index"><li>Movimentações</li></a>
+                                <a asp-area="" asp-controller="MovimentacaoSituacaos" asp-action="Index"><li>Movimentação Situação</li></a>
+                            </ul>
+                        </div>
+                    </li>
 
                     <li>
                         <div class="navMenuMulti">
@@ -32,43 +41,27 @@
                                 <a asp-area="" asp-controller="Livroes" asp-action="Index"><li>Livro</li></a>
                                 <a asp-area="" asp-controller="Funcionarios" asp-action="Index"><li>Funcionário</li></a>
                                 <a asp-area="" asp-controller="Alunoes" asp-action="Index"><li>Aluno</li></a>
+                                <a asp-area="" asp-controller="Autors" asp-action="Index"><li>Autores</li></a>
                             </ul>
                         </div>
                     </li>
                     <li>
                         <div class="navMenuMulti">
-                            <strong>Outros</strong>
+                            <strong>Sistema</strong>
                             <hr />
                             <ul>
-                                <a asp-area="" asp-controller="Pessoas" asp-action="Index"><li>Pessoa</li></a>
+                                <a asp-area="" asp-controller="Pessoas" asp-action="Index"><li>Pessoas</li></a>
+                                <a asp-area="" asp-controller="TipoPessoas" asp-action="Index"><li>Tipo de Pessoa</li></a>
+                                <a asp-area="" asp-controller="TipoTelefones" asp-action="Index"><li>Tipo de Telefone</li></a>
+                                <a asp-area="" asp-controller="Sexoes" asp-action="Index"><li>Sexo</li></a>
+                                <a asp-area="" asp-controller="Nacionalidades" asp-action="Index"><li>Nacionalidades</li></a>
+                                <a asp-area="" asp-controller="Categorias" asp-action="Index"><li>Categorias</li></a>
                             </ul>
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
-        @*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                <div class="container">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GestaoMais.Web</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index">Categorias</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Funcionarios" asp-action="Index">Funcionarios</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>*@
 
         <div class="container2">
             <main role="main" class="pb-3">
@@ -77,12 +70,6 @@
         </div>
     </div>
 
-
-    @*<footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2021 - GestaoMais.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            </div>
-        </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

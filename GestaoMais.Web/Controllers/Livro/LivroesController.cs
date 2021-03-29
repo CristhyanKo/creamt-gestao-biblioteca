@@ -3,16 +3,25 @@ using GestaoMais.Application.Interfaces.Livro;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GestaoMais.Web.Controllers.Livro
 {
+    public class AutorVM
+    {
+        public List<string> selectedAutor { get; set; }
+        public List<SelectListItem> Autor { get; set; }
+    }
+
     public class LivroesController : Controller
     {
         private readonly ILivro _context;
         private readonly IAutor _contextAutor;
         private readonly ICategoria _contextCategoria;
         private readonly ILivroSituacao _contextLivroSituacao;
+
+
 
         public LivroesController(ILivro context, IAutor contextAutor, ICategoria contextCategoria,  ILivroSituacao contextLivroSituacao)
         {

@@ -32,7 +32,6 @@ namespace GestaoMais.Infrastructure.Configuration
         public DbSet<MovimentacaoSituacao> MovimentacaoSituacao { get; set; }
         public DbSet<Pessoa> Pessoa { get; set; }
         public DbSet<PessoaEmail> PessoaEmail { get; set; }
-        public DbSet<PessoaEndereco> PessoaEndereco { get; set; }
         public DbSet<PessoaTelefone> PessoaTelefone { get; set; }
         public DbSet<Nacionalidade> Nacionalidade { get; set; }
         public DbSet<Sexo> Sexo { get; set; }
@@ -41,7 +40,6 @@ namespace GestaoMais.Infrastructure.Configuration
         public DbSet<Aluno> Aluno { get; set; }
         public DbSet<Autor> Autor { get; set; }
         public DbSet<Categoria> Categoria { get; set; }
-        public DbSet<Endereco> Endereco { get; set; }
         public DbSet<Funcionario> Funcionario { get; set; }
 
 
@@ -54,13 +52,14 @@ namespace GestaoMais.Infrastructure.Configuration
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasSequence<int>("MySequence", schema: "shared").StartsAt(1).IncrementsBy(1);
+
             modelBuilder.ApplyConfiguration(new LivroMap());
             modelBuilder.ApplyConfiguration(new LivroSituacaoMap());
             modelBuilder.ApplyConfiguration(new MovimentacaoMap());
             modelBuilder.ApplyConfiguration(new MovimentacaoSituacaoMap());
             modelBuilder.ApplyConfiguration(new PessoaMap());
             modelBuilder.ApplyConfiguration(new PessoaEmailMap());
-            modelBuilder.ApplyConfiguration(new PessoaEnderecoMap());
             modelBuilder.ApplyConfiguration(new PessoaTelefoneMap());
             modelBuilder.ApplyConfiguration(new NacionalidadeMap());
             modelBuilder.ApplyConfiguration(new SexoMap());
@@ -69,7 +68,6 @@ namespace GestaoMais.Infrastructure.Configuration
             modelBuilder.ApplyConfiguration(new AlunoMap());
             modelBuilder.ApplyConfiguration(new AutorMap());
             modelBuilder.ApplyConfiguration(new CategoriaMap());
-            modelBuilder.ApplyConfiguration(new EnderecoMap());
             modelBuilder.ApplyConfiguration(new FuncionarioMap());
 
             base.OnModelCreating(modelBuilder);

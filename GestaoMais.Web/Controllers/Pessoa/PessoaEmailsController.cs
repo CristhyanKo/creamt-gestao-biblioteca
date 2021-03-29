@@ -14,10 +14,18 @@ namespace GestaoMais.Web.Controllers.Pessoa
     public class PessoaEmailsController : Controller
     {
         private readonly IPessoaEmail _context;
+        private readonly IPessoa _contextPessoa;
 
-        public PessoaEmailsController(IPessoaEmail context)
+        public PessoaEmailsController(IPessoaEmail context, IPessoa contextPessoa)
         {
             _context = context;
+            _contextPessoa = contextPessoa;
+        }
+
+        // GET: PessoaEmails/5
+        public async Task<IActionResult> Index(int? id)
+        {
+            return View(await _context.List((int)id));
         }
 
         // GET: PessoaEmails
@@ -44,9 +52,9 @@ namespace GestaoMais.Web.Controllers.Pessoa
         }
 
         // GET: PessoaEmails/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["PessoaId"] = new SelectList("Id", "Nome");
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(),"Id", "Nome");
             return View();
         }
 
@@ -59,10 +67,11 @@ namespace GestaoMais.Web.Controllers.Pessoa
         {
             if (ModelState.IsValid)
             {
+                pessoaEmail.Id = 0;
                 await _context.Add(pessoaEmail);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", "Pessoas", new { id = pessoaEmail.PessoaId });
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", pessoaEmail.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", pessoaEmail.PessoaId);
             return View(pessoaEmail);
         }
 
@@ -79,7 +88,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", pessoaEmail.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", pessoaEmail.PessoaId);
             return View(pessoaEmail);
         }
 
@@ -112,9 +121,9 @@ namespace GestaoMais.Web.Controllers.Pessoa
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", "Pessoas", new { id = pessoaEmail.PessoaId });
             }
-            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", pessoaEmail.PessoaId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", pessoaEmail.PessoaId);
             return View(pessoaEmail);
         }
 
@@ -142,7 +151,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         {
             var pessoaEmail = await _context.GetById(id);
             await _context.Delete(pessoaEmail);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Edit", "Pessoas", new { id = pessoaEmail.PessoaId });
         }
 
         private async Task<bool> PessoaEmailExists(int id)

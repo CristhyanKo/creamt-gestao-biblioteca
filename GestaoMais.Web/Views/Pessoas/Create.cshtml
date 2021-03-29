@@ -47,6 +47,31 @@
                 <a class="addNew" asp-area="" asp-controller="TipoPessoas" asp-action="Index">Adicionar novo(a)</a>
                 <select asp-for="Pessoa.TipoPessoaId" class="form-control" asp-items="ViewBag.TipoPessoaId"></select>
             </div>
+            <div class="form-group">
+                <label asp-for="Pessoa.Logradouro" class="control-label"></label>
+                <input asp-for="Pessoa.Logradouro" class="form-control" />
+                <span asp-validation-for="Pessoa.Logradouro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pessoa.Bairro" class="control-label"></label>
+                <input asp-for="Pessoa.Bairro" class="form-control" />
+                <span asp-validation-for="Pessoa.Bairro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pessoa.Municipio" class="control-label"></label>
+                <input asp-for="Pessoa.Municipio" class="form-control" />
+                <span asp-validation-for="Pessoa.Municipio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pessoa.Cep" class="control-label"></label>
+                <input asp-for="Pessoa.Cep" class="form-control" />
+                <span asp-validation-for="Pessoa.Cep" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pessoa.Numero" class="control-label"></label>
+                <input asp-for="Pessoa.Numero" class="form-control" />
+                <span asp-validation-for="Pessoa.Numero" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Pessoa.Ativo" /> @Html.DisplayNameFor(model => model.Pessoa.Ativo)

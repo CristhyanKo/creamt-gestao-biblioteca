@@ -16,10 +16,10 @@ namespace GestaoMais.Web.Controllers.Pessoa
     {
         public Entities.Entities.Pessoa.Pessoa Pessoa { get; set; }
         public PessoaTelefone PessoaTelefone { get; set; }
-        public PessoaEndereco PessoaEndereco { get; set; }
+        public PessoaEmail PessoaEmails { get; set; }
         public IEnumerable<Entities.Entities.Pessoa.Pessoa> ListPessoa { get; set; }
         public IEnumerable<PessoaTelefone> ListPessoaTelefone { get; set; }
-        public IEnumerable<PessoaEndereco> ListPessoaEndereco { get; set; }
+        public IEnumerable<PessoaEmail> ListPessoaEmail { get; set; }
     }
 
     public class PessoasController : Controller
@@ -29,16 +29,16 @@ namespace GestaoMais.Web.Controllers.Pessoa
         private readonly ISexo _contextSexo;
         private readonly ITipoPessoa _contextTipoPessoa;
         private readonly IPessoaTelefone _contextPessoaTelefone;
-        private readonly IPessoaEndereco _contextPessoaEndereco;
+        private readonly IPessoaEmail _contextPessoaEmail;
 
-        public PessoasController(IPessoa context, INacionalidade contextNacionalidade, ISexo contextSexo, ITipoPessoa contextTipoPessoa, IPessoaTelefone contextPessoaTelefone, IPessoaEndereco contextPessoaEndereco)
+        public PessoasController(IPessoa context, INacionalidade contextNacionalidade, ISexo contextSexo, ITipoPessoa contextTipoPessoa, IPessoaTelefone contextPessoaTelefone, IPessoaEmail contextPessoaEmail)
         {
             _context = context;
             _contextNacionalidade = contextNacionalidade;
             _contextSexo = contextSexo;
             _contextTipoPessoa = contextTipoPessoa;
             _contextPessoaTelefone = contextPessoaTelefone;
-            _contextPessoaEndereco = contextPessoaEndereco;
+            _contextPessoaEmail = contextPessoaEmail;
         }
 
       
@@ -46,10 +46,6 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // GET: Pessoas
         public async Task<IActionResult> Index()
         {
-            //ViewModel models = new ViewModel();
-            //models.Pessoa = await _context.List();
-            //models.PessoaTelefone = await _contextPessoaTelefone.List();
-            //models.PessoaEndereco = await _contextPessoaEndereco.List();
             return View(await _context.List());
         }
 
@@ -85,7 +81,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Nome,CpfCnpj,Rg,DataNascimento,NacionalidadeId,SexoId,TipoPessoaId,Ativo,Id")] Entities.Entities.Pessoa.Pessoa pessoa)
+        public async Task<IActionResult> Create([Bind("Nome,CpfCnpj,Rg,DataNascimento,NacionalidadeId,SexoId,TipoPessoaId,Logradouro,Bairro,Municipio,Cep,Numero,Ativo,Id")] Entities.Entities.Pessoa.Pessoa pessoa)
         {
             if (ModelState.IsValid)
             {
@@ -119,6 +115,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
             models.Pessoa = pessoa;
             models.ListPessoa = await _context.List();
             models.ListPessoaTelefone = await _contextPessoaTelefone.List(pessoa.Id);
+            models.ListPessoaEmail = await _contextPessoaEmail.List(pessoa.Id);
 
             return View(models);
         }
@@ -128,7 +125,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Nome,CpfCnpj,Rg,DataNascimento,NacionalidadeId,SexoId,TipoPessoaId,Ativo,Id")] Entities.Entities.Pessoa.Pessoa pessoa)
+        public async Task<IActionResult> Edit(int id, [Bind("Nome,CpfCnpj,Rg,DataNascimento,NacionalidadeId,SexoId,TipoPessoaId,Logradouro,Bairro,Municipio,Cep,Numero,Ativo,Id")] Entities.Entities.Pessoa.Pessoa pessoa)
         {
             if (id != pessoa.Id)
             {

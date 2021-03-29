@@ -47,7 +47,6 @@ namespace GestaoMais.Web
             services.AddSingleton<IMovimentacaoSituacao, RepositoryMovimentacaoSituacao>();
             services.AddSingleton<IPessoa, RepositoryPessoa>();
             services.AddSingleton<IPessoaEmail, RepositoryPessoaEmail>();
-            services.AddSingleton<IPessoaEndereco, RepositoryPessoaEndereco>();
             services.AddSingleton<IPessoaTelefone, RepositoryPessoaTelefone>();
             services.AddSingleton<INacionalidade, RepositoryNacionalidade>();
             services.AddSingleton<ISexo, RepositorySexo>();
@@ -56,7 +55,6 @@ namespace GestaoMais.Web
             services.AddSingleton<IAluno, RepositoryAluno>();
             services.AddSingleton<IAutor, RepositoryAutor>();
             services.AddSingleton<ICategoria, RepositoryCategoria>();
-            services.AddSingleton<IEndereco, RepositoryEndereco>();
             services.AddSingleton<IFuncionario, RepositoryFuncionario>();
 
             services.AddSingleton<Application.Interfaces.Livro.ILivro, AppLivro>();
@@ -65,7 +63,6 @@ namespace GestaoMais.Web
             services.AddSingleton<Application.Interfaces.Movimentacao.IMovimentacaoSituacao, AppMovimentacaoSituacao>();
             services.AddSingleton<Application.Interfaces.Pessoa.IPessoa, AppPessoa>();
             services.AddSingleton<Application.Interfaces.Pessoa.IPessoaEmail, AppPessoaEmail>();
-            services.AddSingleton<Application.Interfaces.Pessoa.IPessoaEndereco, AppPessoaEndereco>();
             services.AddSingleton<Application.Interfaces.Pessoa.IPessoaTelefone, AppPessoaTelefone>();
             services.AddSingleton<Application.Interfaces.Sistema.INacionalidade, AppNacionalidade>();
             services.AddSingleton<Application.Interfaces.Sistema.ISexo, AppSexo>();
@@ -74,7 +71,6 @@ namespace GestaoMais.Web
             services.AddSingleton<Application.Interfaces.IAluno, AppAluno>();
             services.AddSingleton<Application.Interfaces.IAutor, AppAutor>();
             services.AddSingleton<Application.Interfaces.ICategoria, AppCategoria>();
-            services.AddSingleton<Application.Interfaces.IEndereco, AppEndereco>();
             services.AddSingleton<Application.Interfaces.IFuncionario, AppFuncionario>();
 
             services.AddSingleton<IServiceCategoria, CategoriaService>();

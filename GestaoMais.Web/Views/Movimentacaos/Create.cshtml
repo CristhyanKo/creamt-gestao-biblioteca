@@ -14,15 +14,18 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="LivroId" class="control-label"></label>
-                <select asp-for="LivroId" class ="form-control" asp-items="ViewBag.LivroId"></select>
+                <a class="addNew" asp-area="" asp-controller="Livroes" asp-action="Index">Adicionar novo(a)</a>
+                <select asp-for="LivroId" class="form-control" asp-items="ViewBag.LivroId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="PessoaId" class="control-label"></label>
-                <select asp-for="PessoaId" class ="form-control" asp-items="ViewBag.PessoaId"></select>
+                <a class="addNew" asp-area="" asp-controller="Pessoas" asp-action="Index">Adicionar novo(a)</a>
+                <select asp-for="PessoaId" class="form-control" asp-items="ViewBag.PessoaId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="FuncionarioId" class="control-label"></label>
-                <select asp-for="FuncionarioId" class ="form-control" asp-items="ViewBag.FuncionarioId"></select>
+                <a class="addNew" asp-area="" asp-controller="Funcionarios" asp-action="Index">Adicionar novo(a)</a>
+                <select asp-for="FuncionarioId" class="form-control" asp-items="ViewBag.FuncionarioId"></select>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -35,18 +38,9 @@
                 <span asp-validation-for="DataEmprestimo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DataLimiteDevolucao" class="control-label"></label>
-                <input asp-for="DataLimiteDevolucao" class="form-control" />
-                <span asp-validation-for="DataLimiteDevolucao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataDevolucao" class="control-label"></label>
-                <input asp-for="DataDevolucao" class="form-control" />
-                <span asp-validation-for="DataDevolucao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="MovimentacaoSituacaoId" class="control-label"></label>
-                <select asp-for="MovimentacaoSituacaoId" class ="form-control" asp-items="ViewBag.MovimentacaoSituacaoId"></select>
+                <a class="addNew" asp-area="" asp-controller="MovimentacaoSituacaos" asp-action="Index">Adicionar novo(a)</a>
+                <select asp-for="MovimentacaoSituacaoId" class="form-control" asp-items="ViewBag.MovimentacaoSituacaoId"></select>
             </div>
 
             <div class="form-group">

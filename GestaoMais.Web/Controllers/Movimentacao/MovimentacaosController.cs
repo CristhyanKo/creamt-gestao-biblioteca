@@ -8,16 +8,27 @@ using Microsoft.EntityFrameworkCore;
 using GestaoMais.Entities.Entities.Movimentacao;
 using GestaoMais.Infrastructure.Configuration;
 using GestaoMais.Application.Interfaces.Movimentacao;
+using GestaoMais.Application.Interfaces.Livro;
+using GestaoMais.Application.Interfaces.Pessoa;
+using GestaoMais.Application.Interfaces;
 
 namespace GestaoMais.Web.Controllers.Movimentacao
 {
     public class MovimentacaosController : Controller
     {
         private readonly IMovimentacao _context;
+        private readonly ILivro _contextLivro;
+        private readonly IPessoa _contextPessoa;
+        private readonly IFuncionario _contextFuncionario;
+        private readonly IMovimentacaoSituacao _contextMovimentacaoSituacao;
 
-        public MovimentacaosController(IMovimentacao context)
+        public MovimentacaosController(IMovimentacao context, ILivro contextLivro, IPessoa contextPessoa, IFuncionario contextFuncionario, IMovimentacaoSituacao contextMovimentacaoSituacao)
         {
             _context = context;
+            _contextLivro = contextLivro;
+            _contextPessoa = contextPessoa;
+            _contextFuncionario = contextFuncionario;
+            _contextMovimentacaoSituacao = contextMovimentacaoSituacao;
         }
 
         // GET: Movimentacaos
@@ -44,12 +55,12 @@ namespace GestaoMais.Web.Controllers.Movimentacao
         }
 
         // GET: Movimentacaos/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["FuncionarioId"] = new SelectList("Id", "Id");
-            ViewData["LivroId"] = new SelectList("Id", "Edicao");
-            ViewData["MovimentacaoSituacaoId"] = new SelectList("Id", "Nome");
-            ViewData["PessoaId"] = new SelectList("Id", "Nome");
+            ViewData["FuncionarioId"] = new SelectList(await _contextFuncionario.List(),"Id", "Pessoa.Nome");
+            ViewData["LivroId"] = new SelectList(await _contextLivro.List(), "Id", "Titulo");
+            ViewData["MovimentacaoSituacaoId"] = new SelectList(await _contextMovimentacaoSituacao.List(), "Id", "Nome");
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome");
             return View();
         }
 
@@ -65,10 +76,10 @@ namespace GestaoMais.Web.Controllers.Movimentacao
                 await _context.Add(movimentacao);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FuncionarioId"] = new SelectList(null, "Id", "Id", movimentacao.FuncionarioId);
-            ViewData["LivroId"] = new SelectList(null, "Id", "Edicao", movimentacao.LivroId);
-            ViewData["MovimentacaoSituacaoId"] = new SelectList(null, "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
-            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", movimentacao.PessoaId);
+            ViewData["FuncionarioId"] = new SelectList(await _contextFuncionario.List(), "Id", "Pessoa.Nome", movimentacao.FuncionarioId);
+            ViewData["LivroId"] = new SelectList(await _contextLivro.List(), "Id", "Titulo", movimentacao.LivroId);
+            ViewData["MovimentacaoSituacaoId"] = new SelectList(await _contextMovimentacaoSituacao.List(), "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", movimentacao.PessoaId);
             return View(movimentacao);
         }
 
@@ -85,10 +96,10 @@ namespace GestaoMais.Web.Controllers.Movimentacao
             {
                 return NotFound();
             }
-            ViewData["FuncionarioId"] = new SelectList(null, "Id", "Id", movimentacao.FuncionarioId);
-            ViewData["LivroId"] = new SelectList(null, "Id", "Edicao", movimentacao.LivroId);
-            ViewData["MovimentacaoSituacaoId"] = new SelectList(null, "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
-            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", movimentacao.PessoaId);
+            ViewData["FuncionarioId"] = new SelectList(await _contextFuncionario.List(), "Id", "Pessoa.Nome", movimentacao.FuncionarioId);
+            ViewData["LivroId"] = new SelectList(await _contextLivro.List(), "Id", "Titulo", movimentacao.LivroId);
+            ViewData["MovimentacaoSituacaoId"] = new SelectList(await _contextMovimentacaoSituacao.List(), "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", movimentacao.PessoaId);
             return View(movimentacao);
         }
 
@@ -123,10 +134,10 @@ namespace GestaoMais.Web.Controllers.Movimentacao
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FuncionarioId"] = new SelectList(null, "Id", "Id", movimentacao.FuncionarioId);
-            ViewData["LivroId"] = new SelectList(null, "Id", "Edicao", movimentacao.LivroId);
-            ViewData["MovimentacaoSituacaoId"] = new SelectList(null, "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
-            ViewData["PessoaId"] = new SelectList(null, "Id", "Nome", movimentacao.PessoaId);
+            ViewData["FuncionarioId"] = new SelectList(await _contextFuncionario.List(), "Id", "Pessoa.Nome", movimentacao.FuncionarioId);
+            ViewData["LivroId"] = new SelectList(await _contextLivro.List(), "Id", "Titulo", movimentacao.LivroId);
+            ViewData["MovimentacaoSituacaoId"] = new SelectList(await _contextMovimentacaoSituacao.List(), "Id", "Nome", movimentacao.MovimentacaoSituacaoId);
+            ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", movimentacao.PessoaId);
             return View(movimentacao);
         }
 

@@ -25,7 +25,7 @@
             <div class="form-group">
                 <label asp-for="AutorId" class="control-label"></label>
                 <a class="addNew" asp-area="" asp-controller="Autors" asp-action="Index">Adicionar novo(a)</a>
-                <select class="js-example-basic-single select2layout" name="Autor" asp-for="AutorId" asp-items="ViewBag.AutorId"></select>
+                <select asp-for="AutorId" class="form-control" asp-items="ViewBag.AutorId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Editora" class="control-label"></label>
@@ -45,12 +45,13 @@
             <div class="form-group">
                 <label asp-for="CategoriaId" class="control-label"></label>
                 <a class="addNew" asp-area="" asp-controller="Categorias" asp-action="Index">Adicionar novo(a)</a>
-                <select class="js-example-basic-single select2layout" name="Categoria" asp-for="CategoriaId" asp-items="ViewBag.CategoriaId"></select>
+                <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.CategoriaId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="LivroSituacaoId" class="control-label"></label>
                 <a class="addNew" asp-area="" asp-controller="LivroSituacaos" asp-action="Index">Adicionar novo(a)</a>
-                <select class="js-example-basic-single select2layout" name="LivroSituacao" asp-for="LivroSituacaoId" asp-items="ViewBag.LivroSituacaoId"></select>
+                <select asp-for="LivroSituacaoId" class="form-control" asp-items="ViewBag.LivroSituacaoId"></select>
+
             </div>
 
             <div class="form-group">

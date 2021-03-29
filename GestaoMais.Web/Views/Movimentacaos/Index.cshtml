@@ -44,13 +44,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Livro.Edicao)
+                @Html.DisplayFor(modelItem => item.Livro.Titulo)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Pessoa.Nome)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Funcionario.Id)
+                @Html.DisplayFor(modelItem => item.Funcionario.Pessoa.Nome)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EmprestimoLocal)

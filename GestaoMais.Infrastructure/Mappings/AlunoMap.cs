@@ -10,7 +10,7 @@ namespace GestaoMais.Infrastructure.Mappings
         {
             builder.ToTable("Aluno");
             builder.HasKey(col => col.Id);
-            builder.Property(col => col.Matricula).IsRequired().ValueGeneratedOnAdd().HasDefaultValue(1);
+            builder.Property(col => col.Matricula).HasDefaultValueSql("NEXT VALUE FOR shared.MySequence");
             builder.HasOne(col => col.Pessoa).WithMany().OnDelete(DeleteBehavior.Restrict);
         }
     }
