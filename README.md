@@ -4,13 +4,14 @@ Avaliação prática solicitada pela empresa CREA - MT.
 
 Está aplicação foi desenvolvida inteiramente em .NET, com implementação da arquitetura DDD (Domain Driver Design) para o backend, trazendo o máximo de abstrações para fácil manutenção e crescimento do código, já o FrontEnd foi feito utilizando Wep App MVC.
 
+#### Gif apresentando todo fluxo da aplicação.
 ![](app.gif)
 #### Recursos utilizados
 - C#, HMTL, CSS, JQuery, Bootstrap
 - SQL Server, EF - Entity Framework
 - DDD, MVC 5
 
-### Resumo do desenvolvimento
+#### Resumo do desenvolvimento
 O projeto foi separado em 5 camadas, sendo elas:
 
 - **Entities** - Camada responsável por representar os modelos das tabelas do banco de dados.
