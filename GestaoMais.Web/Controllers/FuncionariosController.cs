@@ -98,6 +98,8 @@ namespace GestaoMais.Web.Controllers
             {
                 try
                 {
+                    var obj = await _context.GetById(funcionario.Id);
+                    funcionario.Matricula = obj.Matricula;
                     await _context.Update(funcionario);
                 }
                 catch (DbUpdateConcurrencyException)
