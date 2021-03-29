@@ -76,6 +76,8 @@ namespace GestaoMais.Web
             services.AddSingleton<IServiceCategoria, CategoriaService>();
             services.AddSingleton<IServicePessoa, PessoaService>();
             services.AddSingleton<IServiceMovimentacao, MovimentacaoService>();
+            services.AddSingleton<IServicePessoaTelefone, PessoaTelefoneService>();
+            services.AddSingleton<IServicePessoaEmail, PessoaEmailService>();
 
             services.AddControllersWithViews();
         }

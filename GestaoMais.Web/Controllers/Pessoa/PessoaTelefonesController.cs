@@ -72,7 +72,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
             if (ModelState.IsValid)
             {
                 pessoaTelefone.Id = 0;
-                await _context.Add(pessoaTelefone);
+                await _context.AddTelefone(pessoaTelefone);
                 return RedirectToAction("Edit", "Pessoas", new { id = pessoaTelefone.PessoaId });
             }
 
@@ -115,7 +115,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
             {
                 try
                 {
-                    await _context.Update(pessoaTelefone);
+                    await _context.UpdateTelefone(pessoaTelefone);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

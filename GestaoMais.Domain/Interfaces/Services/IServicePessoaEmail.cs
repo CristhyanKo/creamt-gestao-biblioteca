@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GestaoMais.Domain.Interfaces.Services
 {
-    public interface IServicePessoaTelefone
+    public interface IServicePessoaEmail
     {
-        Task AddTelefone(PessoaTelefone obj);
-        Task UpdateTelefone(PessoaTelefone obj);
+        Task AddEmail(PessoaEmail obj);
+        Task UpdateEmail(PessoaEmail obj);
     }
 }

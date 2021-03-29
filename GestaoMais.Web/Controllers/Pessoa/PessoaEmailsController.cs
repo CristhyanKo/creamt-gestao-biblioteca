@@ -68,7 +68,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
             if (ModelState.IsValid)
             {
                 pessoaEmail.Id = 0;
-                await _context.Add(pessoaEmail);
+                await _context.AddEmail(pessoaEmail);
                 return RedirectToAction("Edit", "Pessoas", new { id = pessoaEmail.PessoaId });
             }
             ViewData["PessoaId"] = new SelectList(await _contextPessoa.ListActive(), "Id", "Nome", pessoaEmail.PessoaId);
@@ -108,7 +108,7 @@ namespace GestaoMais.Web.Controllers.Pessoa
             {
                 try
                 {
-                    await _context.Update(pessoaEmail);
+                    await _context.UpdateEmail(pessoaEmail);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

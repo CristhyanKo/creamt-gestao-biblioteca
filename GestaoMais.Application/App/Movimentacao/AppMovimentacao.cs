@@ -9,9 +9,10 @@ namespace GestaoMais.Application.App.Movimentacao
         Domain.Interfaces.Movimentacao.IMovimentacao _DomainInterface;
         Domain.Interfaces.Services.IServiceMovimentacao _ServiceInterface;
 
-        public AppMovimentacao(Domain.Interfaces.Movimentacao.IMovimentacao DomainInterface)
+        public AppMovimentacao(Domain.Interfaces.Movimentacao.IMovimentacao DomainInterface, Domain.Interfaces.Services.IServiceMovimentacao ServiceInterface)
         {
             _DomainInterface = DomainInterface;
+            _ServiceInterface = ServiceInterface;
         }
 
         public async Task Add(Entities.Entities.Movimentacao.Movimentacao obj)
