@@ -6,7 +6,7 @@ Está aplicação foi desenvolvida inteiramente em .NET, com implementação da 
 
 ![](app.gif)
 #### Recursos utilizados
-- C#, HMTL, CSS, JQuery
+- C#, HMTL, CSS, JQuery, Bootstrap
 - SQL Server, EF - Entity Framework
 - DDD, MVC 5
 
