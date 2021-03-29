@@ -10,6 +10,7 @@ namespace GestaoMais.Infrastructure.Mappings.Pessoa
         {
             builder.ToTable("PessoaEmail");
             builder.HasKey(col => col.Id);
+            builder.HasIndex(col => col.Email).IsUnique();
             builder.Property(col => col.Email).IsRequired();
             builder.Property(col => col.Principal).IsRequired();
 
