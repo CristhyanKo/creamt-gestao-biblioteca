@@ -10,7 +10,7 @@ Está aplicação foi desenvolvida inteiramente em .NET, com implementação da 
 - SQL Server, EF - Entity Framework
 - DDD, MVC 5
 
-## Resumo do desenvolvimento
+### Resumo do desenvolvimento
 O projeto foi separado em 5 camadas, sendo elas:
 
 - **Entities** - Camada responsável por representar os modelos das tabelas do banco de dados.
@@ -18,6 +18,10 @@ O projeto foi separado em 5 camadas, sendo elas:
 - **Infra** - Camada responsável pelo acesso, comunicação e execução de comandos no banco de dados.
 - **Application** - Camada responsável por fazer a ponte entre o domínio da aplicação e a apresentação final, definindo quais métodos o projeto de apresentação poderá utilizar.
 - **Presentation** - Camada responsável em entregar uma interface para que o usuário final possa executar suas interações.
+
+Design simples feito a mão, utilizando modelo de layout em Flexbox para facil disposição dos componentes em tela.
+
+Views geradas a partir do scaffolding da propiá IDE (Visual Studio Community), tendo as devidas modificações para funcionamento das mesmas na estrutura adotada.
 
 ## Como usar
 
@@ -29,12 +33,12 @@ Pré requisitos
 
 Faça o download deste repositório e acesse a pasta de onde foi baixado o seu projeto, após o download execute o arquivo GestaoMais.sln
 
-Ao executar a solução dirija-se até o seguinte arquivo dentro do Visual Studio:
+Ao executar a solução dirija-se até o seguinte arquivo no Visual Studio:
 ```
 Infra > GestaoMais.Infrastructure > Configuration > ContextBase.cs
 ```
 
-Altere as informações de conexão ao banco de dados para a sua preferencia
+Altere as informações de conexão ao banco de dados para a sua preferência
 
 ```cs
 private string GetStrConn()
