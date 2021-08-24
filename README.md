@@ -53,7 +53,7 @@ private string GetStrConn()
         }
 ```
 
-Defina o projeto `GestaoMais.Web` como o de inicialização.
+Defina o projeto `GestaoMais.Web` como projeto de inicialização.
 ```
 Presentation > GestaoMais.Web
 ```
